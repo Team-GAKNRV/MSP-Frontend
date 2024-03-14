@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-app-input',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app-input.component.css']
 })
 export class AppInputComponent {
+@Input() placeholder: string = "Default Placeholder";
+
 
 }
