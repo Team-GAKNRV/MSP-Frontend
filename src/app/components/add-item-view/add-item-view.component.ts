@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-item-view.component.css']
 })
 export class AddItemViewComponent {
-
+ test():void{
+  console.log("Das war ein test")
+ }
 }
