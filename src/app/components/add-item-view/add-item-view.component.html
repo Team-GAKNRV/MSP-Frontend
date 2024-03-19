@@ -1,20 +1,31 @@
-<div class="card w-96 bg-base-100 shadow-xl m-200 flex">
-  <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-  <div class="card-body">
-    <app-input placeholder="Name"></app-input>
-    <app-input placeholder="Brand"></app-input>
-    <app-input placeholder="Color"></app-input>
-    <app-input placeholder="MasterCategory"></app-input>
-    <app-input placeholder="SubCategory"></app-input>
-    <app-input placeholder="Type"></app-input>
-    <app-input placeholder="Season"></app-input>
-    <app-input placeholder="Usage"></app-input>
-    <<label class="input input-bordered flex items-center gap-2">
-    <input type="text" class="grow" placeholder="Search" />
-    <button (click)="test()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
-    </button>
-  </label>
+<div class="flex justify-center items-center pt-5">
+  <div class="flex justify-center w-96.5 card">
+    <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+    <div class="pt-5 w-full">
+      <div class="pb-2.5">
+        <app-input  placeholder="Name"></app-input>
+      </div>
+      <div>
+        <app-input  class="pt-2.5" placeholder="Brand"></app-input>
+      </div>
+      <div  class="flex pt-2.5">
+        <app-input-with-search placeholder="Color" class="pr-5 w-full"></app-input-with-search>
+        <app-input-with-search placeholder= "MasterCategory"class="w-full"></app-input-with-search>
+      </div>
+      <div  class="flex pt-2.5">
+        <app-input-with-search placeholder="SubCategory" class="pr-5 w-full"></app-input-with-search>
+        <app-input-with-search placeholder="Type" class="w-full"></app-input-with-search>
+      </div>
+      <div  class="flex pt-2.5">
+        <app-input-with-search placeholder="Season" class="pr-5 w-full"></app-input-with-search>
+        <app-input-with-search placeholder="Usage" class="w-full"></app-input-with-search>
+      </div>
+      <div  class="flex gap-5 pt-2.5">
+          <app-button class="w-full"></app-button>
+          <app-stop-button class="w-full"></app-stop-button>
+      </div>
+    </div>
   </div>
 </div>
+
 

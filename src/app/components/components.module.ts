@@ -6,6 +6,8 @@ import { AppInputComponent } from './app-input/app-input.component';
 import { AppDropDownComponent } from './app-drop-down/app-drop-down.component';
 import { AppButtonComponent } from './app-button/app-button.component';
 import { AppImageViewerComponent } from './app-image-viewer/app-image-viewer.component';
+import { InputWithSearchComponent } from './input-with-search/input-with-search.component';
+import { StopButtonComponent } from './stop-button/stop-button.component';
 
 
 
@@ -16,12 +18,17 @@ import { AppImageViewerComponent } from './app-image-viewer/app-image-viewer.com
         AppInputComponent,
         AppDropDownComponent,
         AppButtonComponent,
-        AppImageViewerComponent
+        AppImageViewerComponent,
+        InputWithSearchComponent,
+        StopButtonComponent
+
     ],
   exports: [
     AppDropDownComponent,
     NavBarComponent,
-    AddItemViewComponent
+    AddItemViewComponent,
+    InputWithSearchComponent,
+    StopButtonComponent
   ],
     imports: [
         CommonModule
