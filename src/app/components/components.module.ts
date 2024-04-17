@@ -8,8 +8,9 @@ import { AppButtonComponent } from './app-button/app-button.component';
 import { AppImageViewerComponent } from './app-image-viewer/app-image-viewer.component';
 import { InputWithSearchComponent } from './input-with-search/input-with-search.component';
 import { CancelButtonComponent } from './cancel-button/cancel-button.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AddFileInputComponent} from "./add-file-input/add-file-input.component";
+import {MatAutocompleteTrigger} from "@angular/material/autocomplete";
 
 
 
@@ -35,7 +36,9 @@ import {AddFileInputComponent} from "./add-file-input/add-file-input.component";
   imports: [
     CommonModule,
     FormsModule,
-    AddFileInputComponent
+    AddFileInputComponent,
+    ReactiveFormsModule,
+    MatAutocompleteTrigger
   ]
 })
 export class ComponentsModule { }

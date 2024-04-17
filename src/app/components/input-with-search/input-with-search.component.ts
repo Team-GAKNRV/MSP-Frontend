@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { color } from '../../enums/color';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-input-with-search',
@@ -9,18 +11,12 @@ import { color } from '../../enums/color';
 export class InputWithSearchComponent {
   @Input() placeholder: string = "Default Placeholder";
   @Input() searchTerm: string = "";
-  filteredSuggestions: string[] = [];
-  color: color[] = Object.values(color.Beige);
 
-  putEnumValuesInArray() {
-    console.log(color[1]);
-  }
-
-  filterSuggestion() {
+  /*filterSuggestion() {
       this.filteredSuggestions = this.color.filter(suggestion =>
         suggestion.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
 
-    }
+    }*/
 
 }

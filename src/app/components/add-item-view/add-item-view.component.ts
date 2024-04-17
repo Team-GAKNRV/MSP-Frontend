@@ -3,7 +3,11 @@ import { clothingItemService } from '../../service/clothingItemService'
 import {clothingItem} from "../objects/clothingItem";
 import {ImageConverterService} from "../../service/imageConverterService";
 import {searchInputService} from "../../service/searchInputService";
-
+import {map, Observable, startWith} from "rxjs";
+import {FormControl} from "@angular/forms";
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-add-item-view',
@@ -20,8 +24,26 @@ export class AddItemViewComponent {
   private type: String = '';
   private season: String = '';
   private usage: String = '';
+  filteredOptions: Observable<string[]> | undefined;
+  private myControl = new FormControl();
+  private colors: string[] = [];
 
   constructor(private clothingItemService: clothingItemService) {}
+
+  ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+    const colors = new searchInputService().getColorValues
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.colors.filter(option => option.toLowerCase().includes(filterValue));
+  }
 
   addClothingItemOnClick(name: string, brand: string, color: string, masterCategory: string, subCategory: string, type: string, season: string, usage: string): void{
     //let imageInbyteArray: Uint8Array = new ImageConverterService().upload(image);
@@ -29,7 +51,7 @@ export class AddItemViewComponent {
     //console.log(imageInbyteArray);
   }
 
-    filterSuggestion() {
-        new searchInputService.
-    }
+  showColorSuggestions() {
+    const colors = new searchInputService().getColorValues
+  }
 }
