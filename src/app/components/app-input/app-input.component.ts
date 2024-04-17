@@ -7,5 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class AppInputComponent {
 @Input() placeholder: string = "Default Placeholder";
+@Input() inputValue: string = "";
 
 }

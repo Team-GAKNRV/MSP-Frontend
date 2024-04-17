@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StopButtonComponent } from './stop-button.component';
+import { CancelButtonComponent } from './cancel-button.component';
 
 describe('StopButtonComponent', () => {
-  let component: StopButtonComponent;
-  let fixture: ComponentFixture<StopButtonComponent>;
+  let component: CancelButtonComponent;
+  let fixture: ComponentFixture<CancelButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StopButtonComponent]
+      imports: [CancelButtonComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(StopButtonComponent);
+
+    fixture = TestBed.createComponent(CancelButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

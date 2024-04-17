@@ -7,7 +7,9 @@ import { AppDropDownComponent } from './app-drop-down/app-drop-down.component';
 import { AppButtonComponent } from './app-button/app-button.component';
 import { AppImageViewerComponent } from './app-image-viewer/app-image-viewer.component';
 import { InputWithSearchComponent } from './input-with-search/input-with-search.component';
-import { StopButtonComponent } from './stop-button/stop-button.component';
+import { CancelButtonComponent } from './cancel-button/cancel-button.component';
+import {FormsModule} from "@angular/forms";
+import {AddFileInputComponent} from "./add-file-input/add-file-input.component";
 
 
 
@@ -20,7 +22,7 @@ import { StopButtonComponent } from './stop-button/stop-button.component';
         AppButtonComponent,
         AppImageViewerComponent,
         InputWithSearchComponent,
-        StopButtonComponent
+        CancelButtonComponent
 
     ],
   exports: [
@@ -28,10 +30,12 @@ import { StopButtonComponent } from './stop-button/stop-button.component';
     NavBarComponent,
     AddItemViewComponent,
     InputWithSearchComponent,
-    StopButtonComponent
+    CancelButtonComponent
   ],
-    imports: [
-        CommonModule
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    AddFileInputComponent
+  ]
 })
 export class ComponentsModule { }
