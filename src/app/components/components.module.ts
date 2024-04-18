@@ -13,7 +13,6 @@ import { StopButtonComponent } from './stop-button/stop-button.component';
 
 @NgModule({
     declarations: [
-        NavBarComponent,
         AddItemViewComponent,
         AppInputComponent,
         AppDropDownComponent,
@@ -25,13 +24,13 @@ import { StopButtonComponent } from './stop-button/stop-button.component';
     ],
   exports: [
     AppDropDownComponent,
-    NavBarComponent,
     AddItemViewComponent,
     InputWithSearchComponent,
     StopButtonComponent
   ],
     imports: [
-        CommonModule
+        CommonModule,
+        NavBarComponent
     ]
 })
 export class ComponentsModule { }
