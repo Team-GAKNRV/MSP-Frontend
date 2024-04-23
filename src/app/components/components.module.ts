@@ -11,6 +11,7 @@ import { CancelButtonComponent } from './cancel-button/cancel-button.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AddFileInputComponent} from "./add-file-input/add-file-input.component";
 import {MatAutocompleteTrigger} from "@angular/material/autocomplete";
+import {AppInputAutocompleteComponent} from "./app-input-autocomplete/app-input-autocomplete.component";
 
 
 
@@ -33,12 +34,13 @@ import {MatAutocompleteTrigger} from "@angular/material/autocomplete";
     InputWithSearchComponent,
     CancelButtonComponent
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    AddFileInputComponent,
-    ReactiveFormsModule,
-    MatAutocompleteTrigger
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        AddFileInputComponent,
+        ReactiveFormsModule,
+        MatAutocompleteTrigger,
+        AppInputAutocompleteComponent
+    ]
 })
 export class ComponentsModule { }

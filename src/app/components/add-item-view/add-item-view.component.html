@@ -10,11 +10,7 @@
         <app-input  class="pt-2.5" placeholder="Brand" #brand></app-input>
       </div>
       <div  class="flex pt-2.5">
-
-        <app-input-with-search placeholder="Color" #color class="pr-5 w-full" matInput
-                               [formControl]="myControl"
-                               >></app-input-with-search>
-        <mat-autocomplete #auto="matAutocomplete">
+        <app-app-input-autocomplete [suggestions]="colors" placeholder="Color" #color class="pr-5 w-full"></app-app-input-autocomplete>
         <app-input-with-search placeholder= "MasterCategory" #masterCategory class="w-full"></app-input-with-search>
       </div>
       <div  class="flex pt-2.5">
@@ -26,7 +22,7 @@
         <app-input-with-search placeholder="Usage" #usage class="w-full"></app-input-with-search>
       </div>
       <div  class="flex gap-5 pt-2.5">
-          <app-button class="w-full" (click)="addClothingItemOnClick(name.inputValue, brand.inputValue, color.searchTerm, masterCategory.searchTerm, subCategory.searchTerm, type.searchTerm, season.searchTerm, usage.searchTerm)"></app-button>
+          <app-button class="w-full" (click)="addClothingItemOnClick(name.inputValue, brand.inputValue, color.inputValue, masterCategory.searchTerm, subCategory.searchTerm, type.searchTerm, season.searchTerm, usage.searchTerm)"></app-button>
           <app-cancel-button class="w-full"></app-cancel-button>
       </div>
     </div>
