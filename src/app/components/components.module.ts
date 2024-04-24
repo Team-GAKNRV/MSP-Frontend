@@ -34,13 +34,13 @@ import {AppInputAutocompleteComponent} from "./app-input-autocomplete/app-input-
     InputWithSearchComponent,
     CancelButtonComponent
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        AddFileInputComponent,
-        ReactiveFormsModule,
-        MatAutocompleteTrigger,
-        AppInputAutocompleteComponent
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    AddFileInputComponent,
+    ReactiveFormsModule,
+    MatAutocompleteTrigger,
+    AppInputAutocompleteComponent,
+  ]
 })
 export class ComponentsModule { }

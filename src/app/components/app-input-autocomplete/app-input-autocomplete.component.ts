@@ -1,48 +1,39 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {MatFormField, MatFormFieldControl} from "@angular/material/form-field";
+import { Component, OnInit, Input } from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import {RouterLink} from "@angular/router";
+import {AsyncPipe, NgForOf} from "@angular/common";
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from "@angular/material/autocomplete";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {state} from "@angular/animations";
-import {distinctUntilChanged, map, Observable, startWith} from "rxjs";
+
 
 @Component({
-  selector: 'app-app-input-autocomplete',
+  selector: 'app-input-autocomplete',
   standalone: true,
   imports: [
-    MatFormField,
+    RouterLink,
+    AsyncPipe,
+    ReactiveFormsModule,
+    NgForOf,
     MatAutocomplete,
     MatOption,
-    ReactiveFormsModule,
     MatAutocompleteTrigger,
-    FormsModule,
+    MatLabel,
+    MatFormField,
     MatInput
   ],
   templateUrl: './app-input-autocomplete.component.html',
   styleUrl: './app-input-autocomplete.component.css'
 })
-export class AppAutocompleteInputComponent {
-  @Input() suggestions: string[] = [];
-  @Output() selectedSuggestion = new EventEmitter<string>();
-  @ViewChild(MatAutocompleteTrigger) trigger: MatAutocompleteTrigger | undefined;
+export class AppInputAutocompleteComponent {
+  @Input() placeholder: string = "";
+  @Input() suggestions: string[] = ["test", "Hallo", "Moin"];
+  inputValue: string = ''; // Input value for search term
 
-  filteredSuggestions: Observable<string[]>;
-  private searchControl = new FormControl('');
+  searchControl = new FormControl('');
+  filteredOptions?: Observable<string[]>;
 
-  constructor() {
-    this.filteredSuggestions = this.searchControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this.filterSuggestions(value))
-    );
-  }
+  constructor() { }
 
-  private filterSuggestions(value: string): string[] {
-    const normalizedValue = value.toLowerCase();
-    return this.suggestions.filter(suggestion => suggestion.toLowerCase().includes(normalizedValue));
-  }
-
-  onSuggestionSelected(suggestion: string) {
-    this.selectedSuggestion.emit(suggestion);
-    this.searchControl.setValue('');
-  }
 }
