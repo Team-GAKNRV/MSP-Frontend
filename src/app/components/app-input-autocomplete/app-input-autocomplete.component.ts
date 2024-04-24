@@ -32,7 +32,7 @@ export class AppAutocompleteInputComponent {
   constructor() {
     this.filteredSuggestions = this.searchControl.valueChanges.pipe(
       startWith(''),
-      map(value   => this.filterSuggestions(value))
+      map(value => this.filterSuggestions(value))
     );
   }
 
