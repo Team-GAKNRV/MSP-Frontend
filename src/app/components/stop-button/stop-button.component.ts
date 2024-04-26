@@ -3,8 +3,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-stop-button',
   templateUrl: './stop-button.component.html',
-  styleUrl: './stop-button.component.css'
+  styleUrl: './stop-button.component.css',
 })
-export class StopButtonComponent {
-
-}
+export class StopButtonComponent {}

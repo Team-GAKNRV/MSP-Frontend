@@ -9,28 +9,22 @@ import { AppImageViewerComponent } from './app-image-viewer/app-image-viewer.com
 import { InputWithSearchComponent } from './input-with-search/input-with-search.component';
 import { StopButtonComponent } from './stop-button/stop-button.component';
 
-
-
 @NgModule({
-    declarations: [
-        AddItemViewComponent,
-        AppInputComponent,
-        AppDropDownComponent,
-        AppButtonComponent,
-        AppImageViewerComponent,
-        InputWithSearchComponent,
-        StopButtonComponent
-
-    ],
+  declarations: [
+    AddItemViewComponent,
+    AppInputComponent,
+    AppDropDownComponent,
+    AppButtonComponent,
+    AppImageViewerComponent,
+    InputWithSearchComponent,
+    StopButtonComponent,
+  ],
   exports: [
     AppDropDownComponent,
     AddItemViewComponent,
     InputWithSearchComponent,
-    StopButtonComponent
+    StopButtonComponent,
   ],
-    imports: [
-        CommonModule,
-        NavBarComponent
-    ]
+  imports: [CommonModule, NavBarComponent],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}
