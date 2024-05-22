@@ -29,9 +29,6 @@ export class AddItemViewComponent {
   constructor(private clothingItemService: clothingItemService) {}
 
   addClothingItemOnClick(name: string, brand: string, color: string, masterCategory: string, subCategory: string, type: string, season: string, usage: string): void{
-    //let imageInbyteArray: Uint8Array = new ImageConverterService().upload(image);
     this.clothingItemService.addClothingItem(new clothingItem(name, new ImageConverterService().getTestImage() ,brand, color, masterCategory, subCategory, type, season, usage, false));
-    //console.log(imageInbyteArray);
-    console.log(this.colors.toString())
   }
 }
