@@ -1,27 +1,19 @@
-import { Component } from '@angular/core';
-import {
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
-import { ComponentsModule } from './components/components.module';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import {Component, OnInit} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    ComponentsModule,
-    RouterLink,
-    RouterLinkActive,
-    NavBarComponent,
-  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  constructor(public router: Router) {}
+export class AppComponent implements OnInit{
   title = 'MSP-Frontend';
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      console.log(params);
+    });
+  }
 }
