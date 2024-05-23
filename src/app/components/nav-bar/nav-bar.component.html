@@ -1,18 +1,38 @@
-<div class="navbar bg-gray-300">
-  <div class="navbar-start menu-horizontal">
-    <a class="hover:text-gray-400 hover:cursor-pointer">Home</a>
+<div class="bg-gray-50 navbar">
+  <div class="menu-horizontal navbar-start">
+    <button
+      routerLink="/"
+      routerLinkActive="active"
+      class="ml-10 hover:text-gray-400 hover:cursor-pointer"
+    >
+      Home
+    </button>
   </div>
-  <div class="navbar-center hidden lg:flex">
+  <div class="lg:flex hidden navbar-center">
     <ul class="menu-horizontal">
-      <li class="hover:text-gray-400 hover:cursor-pointer mr-10"><a>Kleiderschrank</a></li>
-      <li class="hover:text-gray-400 hover:cursor-pointer mr-10"><a>Outfits</a></li>
-      <li class="hover:text-gray-400 hover:cursor-pointer mr-10"><a>Inspiration</a></li>
-      <li class="hover:text-gray-400 hover:cursor-pointer mr-10"><a>Favoriten</a></li>
+      <li>
+        <a class="mr-10 hover:text-gray-400 hover:cursor-pointer"
+          >Kleiderschrank</a
+        >
+      </li>
+      <li>
+        <a class="mr-10 hover:text-gray-400 hover:cursor-pointer">Outfits</a>
+      </li>
+      <li>
+        <a class="mr-10 hover:text-gray-400 hover:cursor-pointer"
+          >Inspiration</a
+        >
+      </li>
+      <li>
+        <a class="mr-10 hover:text-gray-400 hover:cursor-pointer">Favoriten</a>
+      </li>
     </ul>
   </div>
-  <div class="navbar-end menu-horizontal">
+  <div class="menu-horizontal navbar-end">
     <ul>
-    <li class="hover:text-gray-400 hover:cursor-pointer"><a>Logout</a></li>
+      <li class="mr-10 hover:text-gray-400 hover:cursor-pointer">
+        <a (click)="logout()">Logout</a>
+      </li>
     </ul>
   </div>
 </div>
