@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
+
+@Injectable({
+  providedIn: 'root',
+})
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,5 +21,4 @@ export class NavBarComponent {
       this.keycloakService.logout();
     }
   }
-
 }

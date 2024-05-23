@@ -1,8 +1,7 @@
-import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { APP_INITIALIZER } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { KeycloakService } from 'keycloak-angular';
-
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -20,15 +19,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
     });
 }
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService]
-    },
-    KeycloakService
-  ]
-};
+export const appConfig = [
+  RouterModule.forRoot(routes),
+  {
+    provide: APP_INITIALIZER,
+    useFactory: initializeKeycloak,
+    multi: true,
+    deps: [KeycloakService]
+  },
+  KeycloakService
+];

@@ -12,22 +12,20 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AddFileInputComponent} from "./add-file-input/add-file-input.component";
 
 
+import { CancelButtonComponent } from './cancel-button/cancel-button.component';
 
 @NgModule({
-    declarations: [
-        NavBarComponent,
-        AddItemViewComponent,
-        AppInputComponent,
-        AppDropDownComponent,
-        AppButtonComponent,
-        AppImageViewerComponent,
-        InputWithSearchComponent,
-        CancelButtonComponent
-
-    ],
+  declarations: [
+    AddItemViewComponent,
+    AppInputComponent,
+    AppDropDownComponent,
+    AppButtonComponent,
+    AppImageViewerComponent,
+    InputWithSearchComponent,
+    CancelButtonComponent,
+  ],
   exports: [
     AppDropDownComponent,
-    NavBarComponent,
     AddItemViewComponent,
     InputWithSearchComponent,
     CancelButtonComponent
@@ -39,4 +37,4 @@ import {AddFileInputComponent} from "./add-file-input/add-file-input.component";
     ReactiveFormsModule,
   ]
 })
-export class ComponentsModule { }
+export class ComponentsModule {}
