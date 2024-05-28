@@ -23,13 +23,5 @@ export class clothingItemObject {
     this.usage = usage;
     this.isFavorite = isFavorit;
   }
-
-  set setFavorite(value: boolean) {
-    this.isFavorite = value;
-  }
-
-  get getFavorite() {
-    return this.isFavorite;
-  }
 }
 

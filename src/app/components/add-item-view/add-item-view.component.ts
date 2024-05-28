@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { clothingItemService } from '../../service/clothingItemService'
-import {clothingItem} from "../objects/clothingItem";
+import { ClothingItemService } from '../../service/clothing-item.service'
 import {ImageConverterService} from "../../service/imageConverterService";
-import {searchInputService} from "../../service/searchInputService";
-import {map, Observable, startWith} from "rxjs";
-import {FormControl} from "@angular/forms";
-import {color} from "../../enums/color";
+import {clothingItemObject} from "../../objects/clothingItemObject";
 
 @Component({
   selector: 'app-add-item-view',
@@ -13,22 +9,9 @@ import {color} from "../../enums/color";
   styleUrls: ['./add-item-view.component.css'],
 })
 export class AddItemViewComponent {
-
-  public name: String = '';
-  private brand: String = '';
-  public color: String = '';
-  private masterCategory: String = '';
-  private subCategory: String = '';
-  private type: String = '';
-  private season: String = '';
-  private usage: String = '';
-  filteredOptions: Observable<string[]> | undefined;
-  private myControl = new FormControl();
-  colors: string[] = new color().colors;
-
-  constructor(private clothingItemService: clothingItemService) {}
+  constructor(private clothingItemService: ClothingItemService) {}
 
   addClothingItemOnClick(name: string, brand: string, color: string, masterCategory: string, subCategory: string, type: string, season: string, usage: string): void{
-    this.clothingItemService.addClothingItem(new clothingItem(name, new ImageConverterService().getTestImage() ,brand, color, masterCategory, subCategory, type, season, usage, false));
+    this.clothingItemService.addClothingItem(new clothingItemObject(name, new ImageConverterService().getTestImage() ,brand, color, masterCategory, subCategory, type, season, usage, false));
   }
 }

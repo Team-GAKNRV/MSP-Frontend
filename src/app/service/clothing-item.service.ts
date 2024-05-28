@@ -25,7 +25,7 @@ export class ClothingItemService {
     };
   }
 
-  public updateClothingItem(ct: clothingItemObject): void {
+  public addClothingItem(ct: clothingItemObject): void {
     this.httpClient
       .post<any>(this.apiUrl + 'clothingItem', JSON.stringify(ct), this.httpOptions)
       .subscribe(
@@ -38,7 +38,7 @@ export class ClothingItemService {
       );
   }
 
-  public updateOutfit(outfit: outfitObject): void {
+  public addOutfit(outfit: outfitObject): void {
     this.httpClient.post<any>(this.apiUrl + 'clothingItem', JSON.stringify(outfit), this.httpOptions)
       .subscribe(
         (response: any) => {
