@@ -8,19 +8,17 @@ import {outfitObject} from "../objects/outfitObject";
   providedIn: 'root'
 })
 export class ClothingItemService {
-  private apiUrl = 'http://localhost:8080/api/v1/';
-  private token = "";
+  private apiUrl = 'http://localhost:8080/api/v1/user/';
   private userID: string | undefined;
   private httpOptions: any;
   data: any[] = [];
 
   constructor(private keycloakService: KeycloakService,  private httpClient: HttpClient) {
-    this.token = this.keycloakService.getToken()[Symbol.toStringTag];
     this.userID = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`
+        'Authorization': `Bearer ${this.keycloakService.getToken()}`
       }),
     };
   }
