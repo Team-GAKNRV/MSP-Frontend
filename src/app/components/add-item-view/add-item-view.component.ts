@@ -12,6 +12,6 @@ export class AddItemViewComponent {
   constructor(private clothingItemService: ClothingItemService) {}
 
   addClothingItemOnClick(name: string, brand: string, color: string, masterCategory: string, subCategory: string, type: string, season: string, usage: string): void{
-    this.clothingItemService.updateClothingItem(new clothingItemObject(name, new ImageConverterService().getTestImage() ,brand, color, masterCategory, subCategory, type, season, usage, false));
+    this.clothingItemService.addClothingItem(new clothingItemObject(name, new ImageConverterService().getTestImage() ,brand, color, masterCategory, subCategory, type, season, usage, false));
   }
 }

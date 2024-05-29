@@ -25,9 +25,9 @@ export class ClothingItemService {
     };
   }
 
-  public updateClothingItem(ct: clothingItemObject): void {
+  public addClothingItem(ct: clothingItemObject): void {
     this.httpClient
-      .post<any>(this.apiUrl + 'clothingItem/' + `${this.apiUrl}?user-id=${this.userID}`, JSON.stringify(ct), this.httpOptions)
+      .post<any>(this.apiUrl + 'clothing-item?user-id=' + `${this.userID}`, JSON.stringify(ct), this.httpOptions)
       .subscribe(
         (response: any) => {
           console.log('Response from server: ', response);
@@ -38,8 +38,8 @@ export class ClothingItemService {
       );
   }
 
-  public updateOutfit(outfit: outfitObject): void {
-    this.httpClient.post<any>(this.apiUrl + 'clothingItem/' + `${this.apiUrl}?user-id=${this.userID}`, JSON.stringify(outfit), this.httpOptions)
+  public addOutfit(outfit: outfitObject): void {
+    this.httpClient.post<any>(this.apiUrl + 'outfit?user-id=' + `${this.userID}`, JSON.stringify(outfit), this.httpOptions)
       .subscribe(
         (response: any) => {
           console.log('Response from server: ', response);
