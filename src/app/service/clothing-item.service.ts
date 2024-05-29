@@ -14,7 +14,6 @@ export class ClothingItemService {
   data: any[] = [];
 
   constructor(private keycloakService: KeycloakService,  private httpClient: HttpClient) {
-    this.token = this.keycloakService.getToken()[Symbol.toStringTag];
     this.userID = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
     this.httpOptions = {
       headers: new HttpHeaders({
