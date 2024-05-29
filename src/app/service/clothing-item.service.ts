@@ -8,7 +8,7 @@ import {outfitObject} from "../objects/outfitObject";
   providedIn: 'root'
 })
 export class ClothingItemService {
-  private apiUrl = 'http://localhost:8080/api/v1/';
+  private apiUrl = 'http://localhost:8080/api/v1/user/';
   private token = "";
   private userID: string | undefined;
   private httpOptions: any;
