@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { ClothingItemService } from '../../service/clothing-item.service'
+import {ImageConverterService} from "../../service/imageConverterService";
+import {clothingItemObject} from "../../objects/clothingItemObject";
 
 @Component({
   selector: 'app-add-item-view',
@@ -6,7 +9,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-item-view.component.css'],
 })
 export class AddItemViewComponent {
-  test(): void {
-    console.log('Das war ein test');
+  constructor(private clothingItemService: ClothingItemService) {}
+
+  addClothingItemOnClick(name: string, brand: string, color: string, masterCategory: string, subCategory: string, type: string, season: string, usage: string): void{
+    this.clothingItemService.addClothingItem(new clothingItemObject(name, new ImageConverterService().getTestImage() ,brand, color, masterCategory, subCategory, type, season, usage, false));
   }
 }

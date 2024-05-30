@@ -1,9 +1,10 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
+import { ComponentsModule } from './components/components.module'; // Import the ComponentsModule
 import { AuthGuard } from './guard/auth.guard';
 import { KeycloakService } from 'keycloak-angular';
 import { routes } from './app.routes';
@@ -27,12 +28,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
 @NgModule({
   declarations: [
     AppComponent,
+    NavBarComponent,
   ],
   imports: [
-    NavBarComponent,
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    ComponentsModule,
   ],
   providers: [
     AuthGuard,
@@ -46,5 +48,4 @@ function initializeKeycloak(keycloak: KeycloakService) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

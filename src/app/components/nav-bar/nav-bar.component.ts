@@ -10,8 +10,6 @@ import { KeycloakService } from 'keycloak-angular';
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
-  imports: [RouterModule],
-  standalone: true,
 })
 export class NavBarComponent {
   constructor(private keycloakService: KeycloakService) {}
