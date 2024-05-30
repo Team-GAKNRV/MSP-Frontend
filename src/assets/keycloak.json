@@ -1,0 +1,9 @@
+{
+  "realm": "msp",
+  "auth-server-url": "http://localhost:8081",
+  "ssl-required": "none",
+  "resource": "msp",
+  "public-client": true,
+  "confidential-port": 0,
+  "clientId": "msp"
+}
