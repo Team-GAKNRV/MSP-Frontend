@@ -1,0 +1,45 @@
+<div class="flex justify-center pt-8">
+  <div class="flex flex-col gap-4">
+    <div class="container mx-auto">
+      <div class="relative w-[42rem] h-[24rem]">
+        <img
+          src="https://as1.ftcdn.net/v2/jpg/02/09/82/26/1000_F_209822653_Fzoff04bZ8QHnseFCHy7vkLmWl1mIDHO.jpg"
+          alt="Foto vom Kleidungsstück"
+          class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <app-input placeholder="Name" />
+      <app-input placeholder="Brand" />
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <app-input placeholder="Hauptfarbe" [searchOptions]="baseColour" />
+      </div>
+      <div class="w-full">
+        <app-input placeholder="Hauptkategorie" />
+      </div>
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <app-input placeholder="Unterkategorie" />
+      </div>
+      <div class="w-full">
+        <app-input placeholder="Kleidungstyp" />
+      </div>
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <app-input placeholder="Hauptsaison" />
+      </div>
+      <div class="w-full">
+        <app-input placeholder="Anlass" />
+      </div>
+    </div>
+    <div class="flex flex-row gap-4">
+      <button>Speichern</button>
+      <button>Abbrechen</button>
+    </div>
+  </div>
+</div>
