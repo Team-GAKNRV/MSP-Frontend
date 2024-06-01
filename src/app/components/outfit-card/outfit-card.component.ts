@@ -35,6 +35,28 @@ export class OutfitCardComponent implements OnInit{
     }
   }
 
+  getCommonUsage(data: any): string {
+    const pieces: { [key: string]: any }[] = data.pieces;
+    const usages: any[] = [];
+    let mostCommon: string = 'NA';
+    for (let i = 0; i < pieces.length; i++){
+      usages.push(pieces[i]['usage']);
+    }
+    mostCommon = usages.reduce((a, b, i, arr) => arr.filter(v => v === a).length > arr.filter(v => v === b).length ? a : b);
+    return mostCommon;
+  }
+
+  getCommonSeason(data: any): string {
+    const pieces: { [key: string]: any }[] = data.pieces;
+    const seasons: any[] = [];
+    let mostCommon: string = 'NA';
+    for (let i = 0; i < pieces.length; i++){
+      seasons.push(pieces[i]['season']);
+    }
+    mostCommon = seasons.reduce((a, b, i, arr) => arr.filter(v => v === a).length > arr.filter(v => v === b).length ? a : b);
+    return mostCommon;
+  }
+
   ngOnInit(): void {
   }
 
