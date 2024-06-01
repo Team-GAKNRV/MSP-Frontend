@@ -17,16 +17,19 @@
         <i class="text-xl text-gray-500 hover:text-red-700 fa-heart fas"></i>
       </button>
     </div>
-    <div class="flex gap-3 mt-16 text-center place-content-between">
-      <label class="w-full px-3 bg-gray-400 rounded-full">{{
-        this.data.brand
-      }}</label>
-      <label class="w-full px-3 bg-gray-400 rounded-full">{{
-        this.data.masterCategory
-      }}</label>
-      <label class="w-full px-3 bg-gray-400 rounded-full">{{
-        this.data.usage
-      }}</label>
+    <div class="flex w-full gap-3 mt-16 text-center place-content-between">
+      <label
+        class="inline-block w-full px-3 overflow-hidden bg-gray-400 rounded-full whitespace-nowrap overflow-ellipsis hover:overflow-visible"
+        >{{ this.data.brand }}</label
+      >
+      <label
+        class="inline-block w-full px-3 overflow-hidden bg-gray-400 rounded-full whitespace-nowrap overflow-ellipsis hover:overflow-visible"
+        >{{ this.data.masterCategory }}</label
+      >
+      <label
+        class="inline-block w-full px-3 overflow-hidden bg-gray-400 rounded-full whitespace-nowrap overflow-ellipsis hover:overflow-visible"
+        >{{ this.data.usage }}</label
+      >
     </div>
   </div>
 </div>
