@@ -32,7 +32,22 @@ export class ClothingService {
         );
     }
 
-    addClothingItem(userId: string, clothingItem: ClothingItem): Observable<any> {
+    createStaticClothingInformation(clothingItem: ClothingItem): ClothingItem {
+        if (clothingItem.brand == "" && clothingItem.name == "") {
+            clothingItem.name = `${clothingItem.color} ${this.makeStringSingularAndRemoveUnderscores(clothingItem.type)}`;
+        }
+
+        if (clothingItem.brand == "") {
+            clothingItem.brand = "Unknown";
+        }
+
+        if (clothingItem.name == "") {
+            `${clothingItem.color} ${this.makeStringSingularAndRemoveUnderscores(clothingItem.type)}`;
+        }
+
+        return clothingItem;
+    }
+
     async addClothingItem(userId: string, bearerToken: string, clothingItem: ClothingItem): Promise<Response> {
         const headers = new HttpHeaders();
 
