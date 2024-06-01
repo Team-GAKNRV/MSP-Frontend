@@ -33,13 +33,23 @@ export class ClothingService {
     }
 
     addClothingItem(userId: string, clothingItem: ClothingItem): Observable<any> {
+    async addClothingItem(userId: string, bearerToken: string, clothingItem: ClothingItem): Promise<Response> {
         const headers = new HttpHeaders();
 
         headers.append('Content-Type', 'multipart/form-data');
 
-        return this.http.post(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT}?user-id=${userId}`, clothingItem, { headers }).pipe(
+        this.http.post(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT}?user-id=${userId}`, clothingItem, { headers }).pipe(
             catchError(this.handleError)
         );
+
+        return await fetch(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT}?user-id=${userId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${bearerToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clothingItem)
+        });
     }
 
     private handleError(error: HttpErrorResponse) {
