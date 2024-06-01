@@ -1,4 +1,4 @@
-<div class="relative w-full">
+<div class="relative w-full" (focusout)="onFocusOut()" (focusin)="onFocus()">
   <input
     type="text"
     class="w-full input input-bordered rounded-xl"
@@ -6,6 +6,7 @@
     #searchInput
     [value]="inputValue"
     (input)="onSearch(searchInput.value)"
+    (focus)="onFocus()"
   />
   <div
     *ngIf="showResults"
