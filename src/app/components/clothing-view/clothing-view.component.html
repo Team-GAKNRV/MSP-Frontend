@@ -62,8 +62,17 @@
       </div>
     </div>
     <div class="flex flex-row gap-4">
-      <button>Speichern</button>
-      <button>Abbrechen</button>
+      <div class="w-full">
+        <button
+          class="w-full text-white btn btn-success"
+          (click)="handleSaveClick()"
+        >
+          Speichern
+        </button>
+      </div>
+      <div class="w-full">
+        <button class="w-full text-white btn btn-error">Abbrechen</button>
+      </div>
     </div>
   </div>
 </div>

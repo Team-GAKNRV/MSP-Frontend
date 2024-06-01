@@ -71,4 +71,42 @@ export class ClothingViewComponent {
       this.router.navigateByUrl('closet');
     }
   }
+
+  handleSaveClick = async () => {
+    let base64Image: string | null = null;
+
+    if (this.uploadedImage) {
+      if (this.uploadedImage instanceof ArrayBuffer) {
+        base64Image = this.clothingImageConverter.arrayBufferToBase64(this.uploadedImage);
+      } else if (typeof this.uploadedImage === 'string') {
+        base64Image = this.uploadedImage;
+      }
+    }
+
+    if (!base64Image) {
+      alert('Es wurde kein Kleidungsstück gefunden. Sie werden zurück zum Kleiderschrank geleitet.');
+      this.router.navigateByUrl('closet');
+      return;
+    }
+
+    base64Image = this.clothingImageConverter.stripDataUrlPrefix(base64Image);
+
+    const clothingItemToSave = new ClothingItem(this.nameValue, base64Image, this.brandValue, this.baseColourValue, this.masterCategoryValue, this.subCategoryValue, this.articleTypeValue, this.seasonValue, this.usageValue, false);
+    const bearerToken = await this.keycloakService.getToken();
+
+    await this.clothingService.addClothingItem(this.keycloakService.getKeycloakInstance().tokenParsed?.sub!, bearerToken, this.clothingService.createStaticClothingInformation(clothingItemToSave))
+      .then((response) => {
+        if (response.ok) {
+          this.router.navigateByUrl('closet');
+        } else {
+          console.log(response.status);
+        }
+      })
+      .catch((error) => alert("Speichern fehlgeschlagen: " + error)
+      );
+  };
+
+  handleCancelClick = () => {
+    this.router.navigateByUrl('closet');
+  };
 }
