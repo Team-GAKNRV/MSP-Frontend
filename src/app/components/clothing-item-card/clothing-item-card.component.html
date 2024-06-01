@@ -1,19 +1,32 @@
-<div class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto ">
+<div
+  class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto"
+>
   <div class="h-60">
-    <img class="w-full h-full object-cover" [src]="base64ToImage(this.data.image)" alt="Bildbeschreibung">
+    <img
+      class="object-cover w-full h-full"
+      [src]="base64ToImage(this.data.image)"
+      alt="Bildbeschreibung"
+    />
   </div>
-  <div class="flex flex-col bg-gray-300 p-4 w-full">
+  <div class="flex flex-col w-full p-4 bg-gray-300">
     <div class="flex place-content-between">
-
-      <h3 class="text-xl leading-5">{{ this.data.name }}</h3>
-      <button class="bg-transparent p-0 border-none focus:outline-none items-center">
-        <i class="text-gray-500 text-xl hover:text-red-700 fa-heart fas"></i>
+      <h3 class="text-xl leading-5 select-none">{{ this.data.name }}</h3>
+      <button
+        class="items-center p-0 bg-transparent border-none focus:outline-none"
+      >
+        <i class="text-xl text-gray-500 hover:text-red-700 fa-heart fas"></i>
       </button>
     </div>
-    <div class="flex place-content-between gap-3 mt-16 text-center">
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.data.brand }}</label>
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{  this.data.masterCategory }}</label>
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.data.usage }}</label>
+    <div class="flex gap-3 mt-16 text-center place-content-between">
+      <label class="w-full px-3 bg-gray-400 rounded-full">{{
+        this.data.brand
+      }}</label>
+      <label class="w-full px-3 bg-gray-400 rounded-full">{{
+        this.data.masterCategory
+      }}</label>
+      <label class="w-full px-3 bg-gray-400 rounded-full">{{
+        this.data.usage
+      }}</label>
     </div>
   </div>
 </div>
