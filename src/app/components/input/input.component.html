@@ -4,7 +4,7 @@
     class="w-full input input-bordered rounded-xl"
     [placeholder]="placeholder"
     #searchInput
-    [value]="inputValue"
+    [value]="inputValue()"
     (input)="onSearch(searchInput.value)"
     (focus)="onFocus()"
   />

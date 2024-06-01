@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, ModelSignal, OnInit, model } from '@angular/core';
 import { SearchOption } from '../../types/search-option.type';
 
 @Component({
@@ -12,7 +12,8 @@ import { SearchOption } from '../../types/search-option.type';
 export class InputComponent implements OnInit {
   @Input() placeholder: string = '';
   @Input() searchOptions: SearchOption = null;
-  @Input() inputValue: string = '';
+
+  inputValue: ModelSignal<string> = model('');
 
   searchOptionValues: string[] = [];
   searchResults: string[] = [];
@@ -28,7 +29,7 @@ export class InputComponent implements OnInit {
   }
 
   onSearch(query: string) {
-    this.inputValue = query;
+    this.inputValue.set(query);
     this.updateSearchResults();
   }
 
@@ -46,7 +47,7 @@ export class InputComponent implements OnInit {
   }
 
   onSelect(option: string) {
-    this.inputValue = option;
+    this.inputValue.set(option);
     this.showResults = false;
     this.focused = false;
   }
@@ -54,7 +55,7 @@ export class InputComponent implements OnInit {
   updateSearchResults() {
     if (this.searchOptions !== null && (this.inputValue || this.focused)) {
       this.searchResults = this.searchOptionValues
-        .filter(option => option.toLowerCase().includes(this.inputValue.toLowerCase()))
+        .filter(option => option.toLowerCase().includes(this.inputValue.toString().toLowerCase()))
         .slice(0, 5);
       this.showResults = true;
     } else {
