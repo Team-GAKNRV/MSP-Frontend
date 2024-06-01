@@ -1,11 +1,11 @@
 <div class="flex justify-center pt-8">
   <div class="flex flex-col gap-4">
     <div class="container mx-auto">
-      <div class="relative w-[42rem] h-[24rem]">
+      <div class="relative w-[42rem] h-[24rem]" *ngIf="uploadedImage">
         <img
-          src="https://as1.ftcdn.net/v2/jpg/02/09/82/26/1000_F_209822653_Fzoff04bZ8QHnseFCHy7vkLmWl1mIDHO.jpg"
+          [src]="uploadedImage"
           alt="Foto vom Kleidungsstück"
-          class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
+          class="absolute top-0 left-0 object-cover w-[42rem] h-[24rem] rounded-xl"
         />
       </div>
     </div>
