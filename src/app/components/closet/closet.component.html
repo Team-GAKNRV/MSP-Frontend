@@ -1,3 +1,15 @@
-<div class="container mx-auto flex flex-wrap justify-center lg:justify-start">
-  <app-clothing-item-card *ngFor="let n of numberOfCards" class="w-1/5 p-2" [data]="n"></app-clothing-item-card>
+<div class="container flex flex-wrap justify-center mx-auto lg:justify-start">
+  <app-add-item-card (click)="onOpenFileDialog()">
+    <input
+      type="file"
+      #fileInput
+      (change)="onFileSelected($event)"
+      style="display: none"
+    />
+  </app-add-item-card>
+  <app-clothing-item-card
+    *ngFor="let n of numberOfCards"
+    class="w-1/5 p-2"
+    [data]="n"
+  ></app-clothing-item-card>
 </div>
