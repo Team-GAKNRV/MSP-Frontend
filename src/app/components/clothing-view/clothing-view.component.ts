@@ -10,5 +10,13 @@ import { InputComponent } from "../input/input.component";
   imports: [InputComponent]
 })
 export class ClothingViewComponent {
+  nameValue: string = "";
+  brandValue: string = "";
+  articleTypeValue: string = "";
+  baseColourValue: string = "";
+  masterCategoryValue: string = "";
+  seasonValue: string = "";
+  subCategoryValue: string = "";
+  usageValue: string = "";
   baseColour = BaseColour;
 }

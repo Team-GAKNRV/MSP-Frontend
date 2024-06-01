@@ -10,31 +10,55 @@
       </div>
     </div>
     <div class="flex flex-col gap-4">
-      <app-input placeholder="Name" />
-      <app-input placeholder="Brand" />
+      <app-input placeholder="Name" [(inputValue)]="nameValue" />
+      <app-input placeholder="Brand" [(inputValue)]="brandValue" />
     </div>
     <div class="flex flex-row gap-4">
       <div class="w-full">
-        <app-input placeholder="Hauptfarbe" [searchOptions]="baseColour" />
+        <app-input
+          placeholder="Base Colour"
+          [searchOptions]="baseColour"
+          [(inputValue)]="baseColourValue"
+        />
       </div>
       <div class="w-full">
-        <app-input placeholder="Hauptkategorie" />
+        <app-input
+          placeholder="Master Category"
+          [searchOptions]="masterCategory"
+          [(inputValue)]="masterCategoryValue"
+        />
       </div>
     </div>
     <div class="flex flex-row gap-4">
       <div class="w-full">
-        <app-input placeholder="Unterkategorie" />
+        <app-input
+          placeholder="Sub Category"
+          [searchOptions]="subCategory"
+          [(inputValue)]="subCategoryValue"
+        />
       </div>
       <div class="w-full">
-        <app-input placeholder="Kleidungstyp" />
+        <app-input
+          placeholder="Type"
+          [searchOptions]="articleType"
+          [(inputValue)]="articleTypeValue"
+        />
       </div>
     </div>
     <div class="flex flex-row gap-4">
       <div class="w-full">
-        <app-input placeholder="Hauptsaison" />
+        <app-input
+          placeholder="Season"
+          [searchOptions]="season"
+          [(inputValue)]="seasonValue"
+        />
       </div>
       <div class="w-full">
-        <app-input placeholder="Anlass" />
+        <app-input
+          placeholder="Usage"
+          [searchOptions]="usage"
+          [(inputValue)]="usageValue"
+        />
       </div>
     </div>
     <div class="flex flex-row gap-4">
