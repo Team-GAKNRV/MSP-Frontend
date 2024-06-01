@@ -4,47 +4,29 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class ClothingImageConverter {
-    convertDataURIToBinary(dataURI?: string): Uint8Array {
-        if (dataURI != null) {
-            const base64Index = dataURI.indexOf(';base64,') + ';base64,'.length;
-            const base64 = dataURI.substring(base64Index);
-            const raw = window.atob(base64);
-
-            const rawLength = raw.length;
-            const array = new Uint8Array(new ArrayBuffer(rawLength));
-            for (let i = 0; i < rawLength; i++) {
-                array[i] = raw.charCodeAt(i);
-            }
-            return array;
-        } else {
-            throw new Error('Data URI is null or undefined.');
+    arrayBufferToBase64(buffer: ArrayBuffer): string {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
         }
+        return window.btoa(binary);
     }
 
-    public upload(image: File): Promise<Uint8Array> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
+    base64ToImage(base64String: string): string {
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/png' });
+        return URL.createObjectURL(blob);
+    }
 
-            reader.onload = () => {
-                try {
-                    const byteArray = this.convertDataURIToBinary(
-                        reader.result as string
-                    );
-                    resolve(byteArray);
-                } catch (error) {
-                    reject(error);
-                }
-            };
-
-            reader.onerror = (error) => {
-                reject(error);
-            };
-
-            if (image) {
-                reader.readAsDataURL(image);
-            } else {
-                reject(new Error('No image file provided.'));
-            }
-        });
+    stripDataUrlPrefix(base64String: string): string {
+        const dataUrlPattern = /^data:image\/(png|jpeg|jpg|webp);base64,/;
+        return base64String.replace(dataUrlPattern, '');
     }
 }

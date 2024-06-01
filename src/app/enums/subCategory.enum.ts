@@ -3,7 +3,7 @@ export enum SubCategory {
     Topwear,
     Dress,
     Innerwear,
-    Loungewear_And_Nightwear,
+    Loungewear_and_Nightwear,
     Headwear,
     Scarves,
     Socks,
