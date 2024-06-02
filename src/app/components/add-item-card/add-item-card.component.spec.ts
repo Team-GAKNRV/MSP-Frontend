@@ -10,8 +10,8 @@ describe('AddItemCardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddItemCardComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(AddItemCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

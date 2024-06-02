@@ -71,16 +71,19 @@ export class ClothingService {
         if (str.endsWith('s')) {
             return str.slice(0, -1).replaceAll('_', ' ');
         }
+
         return str.replaceAll('_', ' ');
     }
 
     private handleError(error: HttpErrorResponse) {
         let errorMessage = 'Unknown error!';
+
         if (error.error instanceof ErrorEvent) {
             errorMessage = `Error: ${error.error.message}`;
         } else {
             errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
+
         return throwError(() => errorMessage);
     }
 }
