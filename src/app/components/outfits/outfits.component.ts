@@ -16,7 +16,7 @@ import { KeycloakService } from "keycloak-angular";
 export class OutfitsComponent {
 
   @ViewChild(OutfitCardComponent) child: any;
-  numberOfCards = [];
+  totalOutfits = [];
 
   constructor(private keycloakService: KeycloakService) {}
 
@@ -31,7 +31,7 @@ export class OutfitsComponent {
     });
 
     if(response.ok){
-      this.numberOfCards = await response.json();
+      this.totalOutfits = await response.json();
     }else{
       console.error(response.status);
     }
