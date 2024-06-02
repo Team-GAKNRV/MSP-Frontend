@@ -14,6 +14,7 @@ import { ClothingItemCardComponent } from "../clothing-item-card/clothing-item-c
   styleUrl: './closet.component.css'
 })
 export class ClosetComponent implements OnInit{
+
   @ViewChild(ClothingItemCardComponent) child: any;
   numberOfCards = [];
 

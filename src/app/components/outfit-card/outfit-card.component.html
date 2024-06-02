@@ -1,19 +1,19 @@
 <div class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto hover:cursor-pointer transition ease-linear duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-slate-100">
-  <div class="h-60">
-    <img class="w-full h-full object-cover" [src]="base64ToImage(this.data.image)" alt="Bildbeschreibung">
+  <div class="h-60 grid grid-rows-2 grid-cols-2">
+    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(0)">
+    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(1)">
+    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(2)">
+    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(3)">
   </div>
   <div class="flex flex-col bg-gray-300 p-4 w-full">
     <div class="flex place-content-between">
-
-      <h3 class="text-xl leading-5 select-none">{{ this.data.name }}</h3>
       <button class="bg-transparent p-0 border-none focus:outline-none items-center">
         <i class="text-gray-500 text-xl hover:text-red-700 fa-heart fas"></i>
       </button>
     </div>
     <div class="flex place-content-between gap-3 mt-16 text-center">
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.data.brand }}</label>
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{  this.data.masterCategory }}</label>
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.data.usage }}</label>
+      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.getCommonSeason(this.data) }}</label>
+      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.getCommonUsage(this.data) }}</label>
     </div>
   </div>
 </div>
