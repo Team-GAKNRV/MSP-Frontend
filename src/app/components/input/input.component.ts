@@ -55,7 +55,7 @@ export class InputComponent implements OnInit {
   updateSearchResults() {
     if (this.searchOptions !== null && (this.inputValue || this.focused)) {
       this.searchResults = this.searchOptionValues
-        .filter(option => option.toLowerCase().includes(this.inputValue.toString().toLowerCase()))
+        .filter(option => option.toLowerCase().includes(this.inputValue().toLowerCase()))
         .slice(0, 5);
       this.showResults = true;
     } else {
