@@ -99,10 +99,14 @@ export class ClothingViewComponent {
         if (response.ok) {
           this.router.navigateByUrl('closet');
         } else {
-          console.log(response.status);
+          if (typeof this.clothingService.createStaticClothingInformation(clothingItemToSave) !== typeof ClothingItem) {
+            alert('Speichern fehlgeschlagen: Bitte nur Labels benutzen, die auch in der Suche vorhanden sind!');
+          } else {
+            alert('Speichern fehlgeschlagen: Unbekannter Fehler!');
+          }
         }
       })
-      .catch((error) => alert("Speichern fehlgeschlagen: " + error)
+      .catch((error) => alert('Speichern fehlgeschlagen: ' + error)
       );
   };
 
