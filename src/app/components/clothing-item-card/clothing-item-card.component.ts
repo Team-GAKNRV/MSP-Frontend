@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular'
-import { ClothingDataService } from '../../services/clothing-data.service';
 import { CommonModule } from '@angular/common';
 
 
@@ -12,14 +11,39 @@ import { CommonModule } from '@angular/common';
   styleUrl: './clothing-item-card.component.css'
 })
 export class ClothingItemCardComponent implements OnInit{
-
+  
   @Input() data: any;
+  convertedImage: string | undefined;
 
-  constructor(private clothingDataService: ClothingDataService, private keycloakService: KeycloakService) {
+  constructor(private keycloakService: KeycloakService) {
+  }
+  ngOnInit(): void {
+    this.convertedImage = this.base64ToImage(this.data.image);
+    //this.checkFavoriteStatus();
+  }
+  async updateClothingItem(clothingItemId: string, updatedClothingItem: any): Promise<void> {
+    delete updatedClothingItem.id;
+    const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?clothing-item-id=${clothingItemId}`;
+    const response = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(updatedClothingItem)
+    });
+  
+    if (response.ok) {
+      console.log('Clothing item updated successfully');
+    } else {
+      console.error(`Failed to update clothing item: ${response.status}`);
+    }
   }
 
-  base64ToImage(base65String: string): string {
-    const byteCharacters = atob(base65String);
+
+  base64ToImage(base64String: string): string {
+    const byteCharacters = atob(base64String);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
@@ -28,23 +52,8 @@ export class ClothingItemCardComponent implements OnInit{
     const blob = new Blob([byteArray], { type: 'image/png' });
     return URL.createObjectURL(blob);
   }
-  async fetchData(): Promise<void> {
-    const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
-    if (userId) {
-      this.clothingDataService.getClothingItems(userId).subscribe(
-        (response) => {
-          this.data = response.map(this.data , ({
-            ...this.data,
-            isFavorite: this.data.isFavorite 
-          }));
-        },
-        (error) => {
-          console.error('Error fetching data:', error);
-        }
-      );
-    }
-}
-async checkFavoriteStatus(): Promise<void> {
+  
+/*async checkFavoriteStatus(): Promise<void> {
   const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
   if (userId) {
     const clothingItems = await this.clothingDataService.getClothingItems(userId).toPromise();
@@ -53,23 +62,16 @@ async checkFavoriteStatus(): Promise<void> {
       this.data.isFavorite = currentItem.isFavorite;
     }
   }
-}
+}*/
 
   async toggleFavorite(): Promise<void> {
   this.data.isFavorite = !this.data.isFavorite;
-  const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
-  if (userId) {
-    try {
-     await this.clothingDataService.updateFavoriteStatus(userId, this.data.id, this.data.isFavorite);
-    } catch (error) {
-      console.log('Error updating favorite status:', error);
-      this.data.isFavorite = !this.data.isFavorite;
-    }
+  await this.updateClothingItem(this.data.id, this.data)
+  .then(() => {
+    console.log('Clothing item successfully updated.');
+  })
+  .catch(error => {
+    console.error('Error updating clothing item:', error);
+  });
   }
-}
-
-ngOnInit(): void {
-  this.fetchData();
-  this.checkFavoriteStatus();
-}
 }

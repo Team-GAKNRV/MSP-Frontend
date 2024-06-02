@@ -1,6 +1,8 @@
 <div class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto ">
   <div class="h-60">
-    <img class="w-full h-full object-cover" [src]="base64ToImage(this.data.image)" alt="Bildbeschreibung">
+    <img  class="object-cover w-full h-full"
+    [src]="convertedImage"
+    alt="Bildbeschreibung">
   </div>
   <div class="flex flex-col bg-gray-300 p-4 w-full">
     <div class="flex place-content-between">
