@@ -1,11 +1,11 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { KeycloakService } from "keycloak-angular";
-import keycloakConfig from './assets/keycloak.json';
-import { APP_INITIALIZER } from "@angular/core";
-import { routes } from "./app/app.routes";
-import { provideRouter } from "@angular/router";
 import { provideHttpClient } from "@angular/common/http";
+import { APP_INITIALIZER } from "@angular/core";
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from "@angular/router";
+import { KeycloakService } from "keycloak-angular";
+import { AppComponent } from './app/app.component';
+import { routes } from "./app/app.routes";
+import keycloakConfig from './assets/keycloak.json';
 
 const keycloakService = new KeycloakService();
 
