@@ -19,6 +19,7 @@ import { ClothingItemCardComponent } from "../clothing-item-card/clothing-item-c
   ]
 })
 export class ClosetComponent implements OnInit {
+
   @ViewChild(ClothingItemCardComponent) child: any;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
   selectedFile: File | null = null;
