@@ -53,10 +53,6 @@ export class ClothingService {
 
         headers.append('Content-Type', 'multipart/form-data');
 
-        this.http.post(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT}?user-id=${userId}`, clothingItem, { headers }).pipe(
-            catchError(this.handleError)
-        );
-
         return await fetch(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT}?user-id=${userId}`, {
             method: 'POST',
             headers: {
