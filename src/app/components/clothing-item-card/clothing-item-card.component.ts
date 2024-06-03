@@ -3,6 +3,7 @@ import { KeycloakService } from 'keycloak-angular'
 import { CommonModule } from '@angular/common';
 
 
+
 @Component({
   selector: 'app-clothing-item-card',
   standalone: true,
@@ -17,12 +18,12 @@ export class ClothingItemCardComponent implements OnInit{
 
   constructor(private keycloakService: KeycloakService) {
   }
+  
   ngOnInit(): void {
     this.convertedImage = this.base64ToImage(this.data.image);
-    //this.checkFavoriteStatus();
   }
+  
   async updateClothingItem(clothingItemId: string, updatedClothingItem: any): Promise<void> {
-    delete updatedClothingItem.id;
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?clothing-item-id=${clothingItemId}`;
     const response = await fetch(apiUrl, {
       method: 'PUT',
@@ -41,7 +42,6 @@ export class ClothingItemCardComponent implements OnInit{
     }
   }
 
-
   base64ToImage(base64String: string): string {
     const byteCharacters = atob(base64String);
     const byteNumbers = new Array(byteCharacters.length);
@@ -53,20 +53,9 @@ export class ClothingItemCardComponent implements OnInit{
     return URL.createObjectURL(blob);
   }
   
-/*async checkFavoriteStatus(): Promise<void> {
-  const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
-  if (userId) {
-    const clothingItems = await this.clothingDataService.getClothingItems(userId).toPromise();
-    const currentItem = clothingItems.find(this.data , this.data.id === this.data.id);
-    if (currentItem) {
-      this.data.isFavorite = currentItem.isFavorite;
-    }
-  }
-}*/
-
   async toggleFavorite(): Promise<void> {
   this.data.isFavorite = !this.data.isFavorite;
-  await this.updateClothingItem(this.data.id, this.data)
+  await this.updateClothingItem(this.data._id, this.data)
   .then(() => {
     console.log('Clothing item successfully updated.');
   })
