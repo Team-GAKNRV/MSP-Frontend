@@ -1,11 +1,12 @@
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { KeycloakService } from "keycloak-angular";
-import { ClothingService } from '../../services/clothing.service';
-import { FileUploadService } from '../../services/file-upload.service';
+import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { ModalDataService } from '../../services/modal-data.service';
 import { AddItemCardComponent } from "../add-item-card/add-item-card.component";
 import { ClothingItemCardComponent } from "../clothing-item-card/clothing-item-card.component";
+import { ClothingModalComponent } from "../clothing-modal/clothing-modal.component";
+import { ModalWrapperComponent } from "../modal-wrapper/modal-wrapper.component";
 
 @Component({
   selector: 'app-closet',
@@ -13,19 +14,25 @@ import { ClothingItemCardComponent } from "../clothing-item-card/clothing-item-c
   templateUrl: './closet.component.html',
   styleUrl: './closet.component.css',
   imports: [
+    NgIf,
     NgForOf,
     ClothingItemCardComponent,
-    AddItemCardComponent
+    AddItemCardComponent,
+    ClothingModalComponent,
+    ModalWrapperComponent
   ]
 })
 export class ClosetComponent implements OnInit {
 
   @ViewChild(ClothingItemCardComponent) child: any;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
+
+  showModal: boolean = false;
+  selectedCard: any = false;
   selectedFile: File | null = null;
   numberOfCards = [];
 
-  constructor(private keycloakService: KeycloakService, private clothingService: ClothingService, private router: Router, private fileUploadService: FileUploadService) { }
+  constructor(private keycloakService: KeycloakService, private modalDataService: ModalDataService, private clothingImageConverterService: ClothingImageConverter) { }
 
   async getAllClothingItems(): Promise<void> {
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-items?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
@@ -39,6 +46,9 @@ export class ClosetComponent implements OnInit {
 
     if (response.ok) {
       this.numberOfCards = await response.json();
+      this.numberOfCards.forEach((card: any) => {
+        card.image = this.clothingImageConverterService.addDataUrlPrefix(card.image);
+      });
     } else {
       console.error(response.status);
     }
@@ -55,6 +65,16 @@ export class ClosetComponent implements OnInit {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
     this.classifyImageAndOpenClothingView();
+  }
+
+  openModal(data: any) {
+    this.modalDataService.setData(data);
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.selectedCard = null;
   }
 
   classifyImageAndOpenClothingView() {
