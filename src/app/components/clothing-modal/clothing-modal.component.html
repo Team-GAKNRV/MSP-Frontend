@@ -1,0 +1,83 @@
+<div class="flex justify-center p-8 bg-white rounded-xl">
+  <div class="flex flex-col gap-4">
+    <div class="container mx-auto">
+      <div class="relative w-[42rem] h-[24rem]" *ngIf="clothingItem">
+        <img
+          [src]="clothingItem.image"
+          alt="Foto vom Kleidungsstück"
+          class="absolute top-0 left-0 object-cover w-[42rem] h-[24rem] rounded-xl"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col gap-4">
+      <app-input placeholder="Name" [(inputValue)]="nameValue" />
+      <app-input placeholder="Brand" [(inputValue)]="brandValue" />
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <app-input
+          placeholder="Base Colour"
+          [searchOptions]="baseColour"
+          [(inputValue)]="baseColourValue"
+        />
+      </div>
+      <div class="w-full">
+        <app-input
+          placeholder="Master Category"
+          [searchOptions]="masterCategory"
+          [(inputValue)]="masterCategoryValue"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <app-input
+          placeholder="Sub Category"
+          [searchOptions]="subCategory"
+          [(inputValue)]="subCategoryValue"
+        />
+      </div>
+      <div class="w-full">
+        <app-input
+          placeholder="Type"
+          [searchOptions]="articleType"
+          [(inputValue)]="articleTypeValue"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <app-input
+          placeholder="Season"
+          [searchOptions]="season"
+          [(inputValue)]="seasonValue"
+        />
+      </div>
+      <div class="w-full">
+        <app-input
+          placeholder="Usage"
+          [searchOptions]="usage"
+          [(inputValue)]="usageValue"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row gap-4">
+      <div class="w-full">
+        <button
+          class="w-full text-white btn btn-success"
+          (click)="handleSaveClick()"
+        >
+          Speichern
+        </button>
+      </div>
+      <div class="w-full">
+        <button
+          class="w-full text-white btn btn-error"
+          (click)="handleCancelClick()"
+        >
+          Abbrechen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
