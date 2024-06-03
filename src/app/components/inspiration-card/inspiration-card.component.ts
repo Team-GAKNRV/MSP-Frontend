@@ -54,6 +54,17 @@ export class InspirationCardComponent implements OnInit{
     return mostCommon;
   }
 
+  getCommonColor(data: any): string {
+    const pieces: { [key: string]: any }[] = data.pieces;
+    const seasons: any[] = [];
+    let mostCommon: string = 'NA';
+    for (let i = 0; i < pieces.length; i++){
+      seasons.push(pieces[i]['color']);
+    }
+    mostCommon = seasons.reduce((a, b, i, arr) => arr.filter(v => v === a).length > arr.filter(v => v === b).length ? a : b);
+    return mostCommon;
+  }
+
   ngOnInit(): void {
   }
 
