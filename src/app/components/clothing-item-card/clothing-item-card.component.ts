@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-clothing-item-card',
@@ -8,14 +7,11 @@ import { ClothingImageConverter } from '../../services/clothing-image-converter.
   templateUrl: './clothing-item-card.component.html',
   styleUrl: './clothing-item-card.component.css'
 })
-export class ClothingItemCardComponent implements OnInit {
+export class ClothingItemCardComponent {
   @Input() data: any;
+  @Output() itemClicked = new EventEmitter<any>();
 
-  convertedImage: string | undefined;
-
-  constructor(private clothingImageConverter: ClothingImageConverter) { }
-
-  ngOnInit(): void {
-    this.convertedImage = this.clothingImageConverter.base64ToImage(this.data.image);
+  onClick(): void {
+    this.itemClicked.emit(this.data);
   }
 }
