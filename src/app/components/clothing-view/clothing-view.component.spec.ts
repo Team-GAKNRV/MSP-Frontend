@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavbarComponent } from './navbar.component';
+import { ClothingViewComponent } from './clothing-view.component';
 
-describe('NavbarComponent', () => {
-  let component: NavbarComponent;
-  let fixture: ComponentFixture<NavbarComponent>;
+describe('ClothingViewComponent', () => {
+  let component: ClothingViewComponent;
+  let fixture: ComponentFixture<ClothingViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavbarComponent]
+      imports: [ClothingViewComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(NavbarComponent);
+    fixture = TestBed.createComponent(ClothingViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
