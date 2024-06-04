@@ -43,6 +43,7 @@ export class ClosetComponent implements OnInit {
       console.error(response.status);
     }
   }
+  
 
   ngOnInit(): void {
     this.getAllClothingItems();
