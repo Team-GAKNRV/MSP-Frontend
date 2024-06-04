@@ -8,6 +8,5 @@ export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'closet', component: ClosetComponent },
   { path: 'outfits', component: OutfitsComponent },
-  { path: 'closet', component: ClosetComponent },
 ];
 
