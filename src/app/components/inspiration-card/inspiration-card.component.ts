@@ -106,7 +106,6 @@ export class InspirationCardComponent implements OnInit {
     });
 
     if (response.ok) {
-      console.log("It worked")
     } else {
       console.log(response.status);
     }
