@@ -17,7 +17,9 @@ import { InputComponent } from "../input/input.component";
   imports: [CommonModule, InputComponent]
 })
 export class ClothingModalComponent implements OnInit {
-  @Input() modalIsOpen: boolean | undefined;
+  @Input() modalIsOpen: boolean = false;
+  @Input() saveAsNewClothingItem: boolean = false;
+
   @Output() close = new EventEmitter<void>();
 
   clothingItem: any;
