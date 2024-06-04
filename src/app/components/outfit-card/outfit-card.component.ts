@@ -58,8 +58,20 @@ export class OutfitCardComponent{
     return mostCommon;
   }
 
+  createRequestBody(updatedOutfit: { pieces: string | any[], isFavorite: boolean; }){
+    const requestBody = {
+      pieces: [] as string[],
+      isFavorite: updatedOutfit.isFavorite
+    };
+    for (let i = 0; i < updatedOutfit.pieces.length; i++) {
+      requestBody.pieces.push(updatedOutfit.pieces[i]._id);
+    }
+    return requestBody;
+  }
+    
   async updateOutfit(outfitId: string,updatedOutfit: any): Promise<void>{
-    const apiUrl = `http://localhost:8080/api/v1/user/outfits?outfit-id=${outfitId}`;
+    const apiUrl = `http://localhost:8080/api/v1/user/outfit?outfit-id=${outfitId}`;
+    const requestBody = this.createRequestBody(updatedOutfit);
     const response = await fetch(apiUrl, {
       method: 'PUT',
       headers: {
@@ -67,26 +79,26 @@ export class OutfitCardComponent{
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(updatedOutfit)
+      body: JSON.stringify(requestBody)
     });
   
     if (response.ok) {
-      console.log('Clothing item updated successfully');
+      console.log('Outfit successfully updated.');
     } else {
-      console.error(`Failed to update clothing item: ${response.status}`);
+      console.error(`Error updating Outfit: ${response.status}`);
     }
   }
 
   async toggleFavorite(): Promise<void> {
     this.data.isFavorite = !this.data.isFavorite;
+    console.log(this.data);
     await this.updateOutfit(this.data._id, this.data)
     .then(() => {
       console.log('Outfit successfully updated.');
     })
     .catch(error => {
-      console.error('Error updating clothing item:', error);
+      console.error('Error updating Outfit', error);
     });
     }
-
 
 }
