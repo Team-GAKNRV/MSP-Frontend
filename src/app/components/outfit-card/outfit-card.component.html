@@ -6,10 +6,15 @@
     <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(3)">
   </div>
   <div class="flex flex-col bg-gray-300 p-4 w-full">
-    <div class="flex place-content-between">
-      <button (click)="toggleFavorite()" class="bg-transparent p-0 border-none focus:outline-none items-center">
-        <i [ngClass]="{'favorite-heart': data.isFavorite}" class="text-xl fa-heart fas"></i>
-      </button>
+    <div class="flex">
+      <div class="flex items-center space-x-3 ml-auto">
+        <button (click)="toggleFavorite()" class="bg-transparent p-0 border-none focus:outline-none">
+          <i [ngClass]="{'favorite-heart': data.isFavorite}" class="text-xl fa-heart fas"></i>
+        </button>
+        <button class="bg-transparent p-0 border-none focus:outline-none">
+          <i class="text-xl fa-trash fas hover:text-error-content/50 scale-90"></i>
+        </button>
+      </div>
     </div>
     <div class="flex place-content-between gap-3 mt-16 text-center">
       <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.getCommonSeason(this.data) }}</label>
