@@ -47,6 +47,11 @@ export class ClothingItemCardComponent implements OnInit{
       });
   }
 
+  buttonClockEvent(event: Event): void {
+    event.stopPropagation();
+    console.log(this.data._id);
+  }
+
   ngOnInit(): void {
     this.convertedImage = this.clothingImageConverter.base64ToImage(this.data.image);
   }
