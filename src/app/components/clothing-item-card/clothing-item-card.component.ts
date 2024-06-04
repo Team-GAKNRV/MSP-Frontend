@@ -3,8 +3,6 @@ import { ClothingImageConverter } from '../../services/clothing-image-converter.
 import { KeycloakService } from 'keycloak-angular'
 import { CommonModule } from '@angular/common';
 
-
-
 @Component({
   selector: 'app-clothing-item-card',
   standalone: true,
