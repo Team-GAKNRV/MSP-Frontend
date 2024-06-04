@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { NgForOf } from '@angular/common';
 import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
-    imports: [NgForOf, ClothingItemCardComponent, OutfitCardComponent]
+    imports: [NgForOf, ClothingItemCardComponent, OutfitCardComponent,CommonModule]
 })
 export class HomeComponent {
   @ViewChild(ClothingItemCardComponent) child: any;
@@ -31,9 +32,7 @@ export class HomeComponent {
     });
 
     if (response.ok) {
-      this.numberOfCardsClothing = await response.json();
-    } else {
-      console.error(response.status);
+     this.numberOfCardsClothing = await response.json();
     }
   }
   
@@ -46,9 +45,8 @@ export class HomeComponent {
         'Content-Type': 'application/json'
       }
     });
-
-    if (response.ok) {
-      this.numberOfCardsOutfit = await response.json();
+        if (response.ok) {
+          this.numberOfCardsOutfit = await response.json();    
     } else {
       console.error(response.status);
     }
