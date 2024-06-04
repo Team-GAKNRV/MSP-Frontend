@@ -3,24 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ClothingItem } from '../classes/clothing-item.class';
-import { ClassifiedClothingItem } from '../types/classified-clothing-item.type';
-import { ClothingImageConverter } from './clothing-image-converter.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ClothingService {
-    private classificationInformation: ClassifiedClothingItem | undefined;
-
-    constructor(private clothingImageConverterService: ClothingImageConverter, private http: HttpClient) { }
-
-    setClassificationInformation(classificationInformation: ClassifiedClothingItem | undefined) {
-        this.classificationInformation = classificationInformation;
-    }
-
-    getClassificationInformation(): ClassifiedClothingItem | undefined {
-        return this.classificationInformation;
-    }
+    constructor(private http: HttpClient) { }
 
     classifyImage(imageFile: File): Observable<any> {
         const headers = new HttpHeaders();
