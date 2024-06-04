@@ -3,27 +3,22 @@
       <p class="mt-3 text-2xl">Kleiderschrank ></p>
       <div class="flex flex-row gap-8">
         <ng-container *ngFor="let n of favoriteClothingItems; let i = index">
-          <ng-container *ngIf="i < 5">
             <app-clothing-item-card
               class="w-1/5 p-2"
               [data]="n"
             ></app-clothing-item-card>
           </ng-container>
-        </ng-container>
       </div>
       <div class="divider"></div>
-      <p class="text-2xl">Outfits ></p>
-      <div class="flex flex-row gap-8">
-        <ng-container *ngFor="let n of favoriteOutfits; let i = index">
-          <ng-container *ngIf="i < 5">
-            <app-outfit-card
-              class="w-1/5 p-2"
-              [data]="n"
-            ></app-outfit-card>
+        <p class="text-2xl">Outfits ></p>
+        <div class="flex flex-row gap-8">
+          <ng-container *ngFor="let n of favoriteOutfits; let i = index">
+              <app-outfit-card
+                class="w-1/5 p-2"
+                [data]="n"
+              ></app-outfit-card>
           </ng-container>
-        </ng-container>
+        </div>
       </div>
-    </div>
-</div>
-     
+  </div>
   
