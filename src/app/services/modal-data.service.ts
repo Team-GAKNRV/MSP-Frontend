@@ -7,8 +7,11 @@ import { BehaviorSubject } from 'rxjs';
 export class ModalDataService {
     private dataSubject = new BehaviorSubject<any>(null);
     private fileSubject = new BehaviorSubject<any>(null);
+    private needsReloadSubject = new BehaviorSubject<boolean>(false);
+
     data$ = this.dataSubject.asObservable();
     file$ = this.fileSubject.asObservable();
+    needsReload$ = this.needsReloadSubject.asObservable();
 
     setData(data: any) {
         this.dataSubject.next(data);
@@ -16,5 +19,9 @@ export class ModalDataService {
 
     setFile(file: any) {
         this.fileSubject.next(file);
+    }
+
+    setNeedsReload(needsReload: boolean) {
+        this.needsReloadSubject.next(needsReload);
     }
 }
