@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {KeycloakService} from "keycloak-angular";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-inspiration-card',
@@ -11,11 +12,11 @@ import {KeycloakService} from "keycloak-angular";
   templateUrl: './inspiration-card.component.html',
   styleUrl: './inspiration-card.component.css'
 })
-export class InspirationCardComponent implements OnInit {
+export class InspirationCardComponent {
 
   @Input() data: any;
 
-  constructor(private keycloakService: KeycloakService) {
+  constructor(private keycloakService: KeycloakService, private router: Router) {
   }
 
   base64ToImage(base65String: string): string {
@@ -73,7 +74,7 @@ export class InspirationCardComponent implements OnInit {
   }
 
   async rerollOutfit(usage: String): Promise<void> {
-    const apiUrl = `http://localhost:8080/api/v1/user/outfits/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}&usage=${usage}`;
+    const apiUrl = `http://localhost:8080/api/v1/user/outfit/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}&usage=${usage}`;
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
@@ -106,12 +107,10 @@ export class InspirationCardComponent implements OnInit {
     });
 
     if (response.ok) {
+      await this.router.navigate(['/outfits']);
     } else {
       console.log(response.status);
     }
-  }
-
-  ngOnInit(): void {
   }
 
 }
