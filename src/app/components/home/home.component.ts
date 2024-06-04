@@ -6,7 +6,6 @@ import { NgForOf } from '@angular/common';
 import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
 import { CommonModule } from '@angular/common';
 
-
 @Component({
     selector: 'app-home',
     standalone: true,
