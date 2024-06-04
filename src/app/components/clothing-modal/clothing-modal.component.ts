@@ -21,6 +21,7 @@ export class ClothingModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   clothingItem: any;
+  clothingImage: any;
 
   nameValue: string = "";
   brandValue: string = "";
@@ -45,6 +46,13 @@ export class ClothingModalComponent implements OnInit {
       this.clothingItem = clothingItemData;
       if (this.clothingItem) {
         this.fillInClothingItemData();
+      }
+    });
+
+    this.modalDataService.file$.subscribe(clothingImage => {
+      this.clothingImage = clothingImage;
+      if (this.clothingImage) {
+        this.convertClothingImageToBase64();
       }
     });
   }
