@@ -63,6 +63,21 @@ export class ClothingService {
         });
     }
 
+    async updateClothingItem(bearerToken: string, clothingItemId: string, clothingItem: ClothingItem): Promise<Response> {
+        const headers = new HttpHeaders();
+
+        headers.append('Content-Type', 'multipart/form-data');
+
+        return await fetch(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT}?clothing-item-id=${clothingItemId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${bearerToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clothingItem)
+        });
+    }
+
     private makeStringSingularAndRemoveUnderscores(str: string): string {
         if (str.endsWith('s')) {
             return str.slice(0, -1).replaceAll('_', ' ');
