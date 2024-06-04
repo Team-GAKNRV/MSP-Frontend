@@ -3,7 +3,7 @@
       <p class="mt-3 text-2xl">Kleiderschrank ></p>
       <div class="flex flex-row gap-8">
         <app-clothing-item-card
-        *ngFor="let n of numberOfCards"
+        *ngFor="let n of numberOfCardsClothing"
         class="w-1/5 p-2"
         [data]="n"
       ></app-clothing-item-card>
@@ -13,7 +13,11 @@
     <div class="flex flex-col items-start ml-7 h-[50%]">
       <p class="text-2xl">Outfits ></p>
       <div class="flex flex-row gap-8">
-      
+        <app-outfit-card
+        *ngFor="let n of numberOfCardsOutfit"
+        class="w-1/5 p-2"
+        [data]="n"
+      ></app-outfit-card>
       </div>
     </div>
   </div>
