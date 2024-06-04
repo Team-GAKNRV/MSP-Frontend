@@ -4,12 +4,14 @@ import { ClothingViewComponent } from './components/clothing-view/clothing-view.
 import { HomeComponent } from "./components/home/home.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { OutfitsComponent } from "./components/outfits/outfits.component";
+import { FavoritesComponent } from './components/favorites/favorites.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'closet', component: ClosetComponent },
   { path: 'outfits', component: OutfitsComponent },
   { path: 'closet', component: ClosetComponent },
-  { path: 'view', component: ClothingViewComponent }
+  { path: 'view', component: ClothingViewComponent },
+  { path: 'favorites', component: FavoritesComponent }
 ];
 
