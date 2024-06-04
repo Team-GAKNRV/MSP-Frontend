@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ClothingItem } from '../classes/clothing-item.class';
 import { ClassifiedClothingItem } from '../types/classified-clothing-item.type';
+import { ClothingImageConverter } from './clothing-image-converter.service';
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +12,7 @@ import { ClassifiedClothingItem } from '../types/classified-clothing-item.type';
 export class ClothingService {
     private classificationInformation: ClassifiedClothingItem | undefined;
 
-    constructor(private http: HttpClient) { }
+    constructor(private clothingImageConverterService: ClothingImageConverter, private http: HttpClient) { }
 
     setClassificationInformation(classificationInformation: ClassifiedClothingItem | undefined) {
         this.classificationInformation = classificationInformation;
@@ -32,7 +33,7 @@ export class ClothingService {
         );
     }
 
-    createStaticClothingInformation(clothingItem: ClothingItem): ClothingItem {
+    createStaticClothingInformation(clothingItem: any): any {
         if (clothingItem.brand == "" && clothingItem.name == "") {
             clothingItem.name = `${clothingItem.color} ${this.makeStringSingularAndRemoveUnderscores(clothingItem.type)}`;
         }
@@ -48,7 +49,7 @@ export class ClothingService {
         return clothingItem;
     }
 
-    async addClothingItem(userId: string, bearerToken: string, clothingItem: ClothingItem): Promise<Response> {
+    async addClothingItem(bearerToken: string, userId: string, clothingItem: ClothingItem): Promise<Response> {
         const headers = new HttpHeaders();
 
         headers.append('Content-Type', 'multipart/form-data');
