@@ -1,0 +1,74 @@
+<div class="flex flex-col justify-center gap-8 p-8 bg-white rounded-xl">
+  <div class="flex flex-col gap-4">
+    <div class="grid w-full h-full grid-cols-2 grid-rows-2 gap-4">
+      <div *ngFor="let piece of selectedOutfitPieces">
+        <div *ngIf="piece.name !== undefined; else emptySlot">
+          <div
+            class="flex flex-col items-center justify-center gap-4 bg-white shadow-lg rounded-[2rem] h-60 overflow-hidden p-8 mx-auto w-[387px] transition ease-linear duration-300 hover:cursor-pointer hover:-translate-y-1 hover:scale-105 hover:bg-slate-100"
+          >
+            <div class="flex items-center w-full place-content-between">
+              <div class="w-32 h-32">
+                <img
+                  class="object-cover w-full h-full select-none"
+                  [src]="piece.image"
+                  [alt]="piece.name"
+                />
+              </div>
+              <div class="flex flex-col gap-4 text-right">
+                <p class="text-2xl">{{ piece.name }}</p>
+                <p class="text-xl">{{ piece.brand }}</p>
+              </div>
+            </div>
+            <div class="hover:cursor-pointer">
+              <label
+                class="w-full px-3 mr-1 bg-gray-400 rounded-full hover:cursor-pointer"
+                >{{ piece.masterCategory }}
+              </label>
+              <label
+                class="w-full px-3 mr-1 bg-gray-400 rounded-full hover:cursor-pointer"
+                >{{ piece.subCategory }}
+              </label>
+              <label
+                class="w-full px-3 mr-1 bg-gray-400 rounded-full hover:cursor-pointer"
+                >{{ piece.type }}
+              </label>
+              <label
+                class="w-full px-3 mr-1 bg-gray-400 rounded-full hover:cursor-pointer"
+                >{{ piece.color }}
+              </label>
+              <label
+                class="w-full px-3 mr-1 bg-gray-400 rounded-full hover:cursor-pointer"
+                >{{ piece.usage }}
+              </label>
+              <label
+                class="w-full px-3 mr-1 bg-gray-400 rounded-full hover:cursor-pointer"
+                >{{ piece.season }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <ng-template #emptySlot>
+          <app-add-outfit-card />
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-row gap-4">
+    <div class="w-full">
+      <button
+        class="w-full text-white btn btn-success"
+        (click)="handleSaveClick()"
+      >
+        Speichern
+      </button>
+    </div>
+    <div class="w-full">
+      <button
+        class="w-full text-white btn btn-error"
+        (click)="handleCancelClick()"
+      >
+        Abbrechen
+      </button>
+    </div>
+  </div>
+</div>
