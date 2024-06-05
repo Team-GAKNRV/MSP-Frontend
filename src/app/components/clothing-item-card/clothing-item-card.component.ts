@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
-import { KeycloakService } from 'keycloak-angular'
-import { CommonModule } from '@angular/common';
+import {Component, Input, OnInit} from '@angular/core';
+import {ClothingImageConverter} from '../../services/clothing-image-converter.service';
+import {KeycloakService} from 'keycloak-angular'
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-clothing-item-card',
@@ -10,12 +10,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './clothing-item-card.component.html',
   styleUrl: './clothing-item-card.component.css'
 })
-export class ClothingItemCardComponent implements OnInit{
+export class ClothingItemCardComponent implements OnInit {
 
   @Input() data: any;
   convertedImage: string | undefined;
 
-  constructor(private clothingImageConverter: ClothingImageConverter, private keycloakService: KeycloakService) { }
+  constructor(private clothingImageConverter: ClothingImageConverter, private keycloakService: KeycloakService) {
+  }
 
   async updateClothingItem(clothingItemId: string, updatedClothingItem: any): Promise<void> {
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?clothing-item-id=${clothingItemId}`;
@@ -47,9 +48,23 @@ export class ClothingItemCardComponent implements OnInit{
       });
   }
 
-  buttonClockEvent(event: Event): void {
+  async buttonClockEvent(event: Event): Promise<void> {
     event.stopPropagation();
-    console.log(this.data._id);
+    const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&clothing-item-id=${this.data._id}`;
+    const response = await fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      console.log('Clothing item deleted');
+      window.location.reload();
+    } else {
+      console.error(`Failed to update clothing item: ${response.status}`);
+    }
   }
 
   ngOnInit(): void {

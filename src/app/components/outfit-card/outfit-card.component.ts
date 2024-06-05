@@ -68,7 +68,7 @@ export class OutfitCardComponent{
     }
     return requestBody;
   }
-    
+
   async updateOutfit(outfitId: string,updatedOutfit: any): Promise<void>{
     const apiUrl = `http://localhost:8080/api/v1/user/outfit?outfit-id=${outfitId}`;
     const requestBody = this.createRequestBody(updatedOutfit);
@@ -81,7 +81,7 @@ export class OutfitCardComponent{
       },
       body: JSON.stringify(requestBody)
     });
-  
+
     if (response.ok) {
       console.log('Outfit successfully updated.');
     } else {
@@ -99,6 +99,25 @@ export class OutfitCardComponent{
     .catch(error => {
       console.error('Error updating Outfit', error);
     });
+  }
+
+  async buttonClockEvent(event: Event): Promise<void> {
+    event.stopPropagation();
+    const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&outfit-id=${this.data._id}`;
+    const response = await fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      console.log('Outfit deleted');
+      window.location.reload();
+    } else {
+      console.error(`Failed to update clothing item: ${response.status}`);
     }
+  }
 
 }

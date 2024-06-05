@@ -11,7 +11,7 @@
         <button (click)="toggleFavorite()" class="bg-transparent p-0 border-none focus:outline-none">
           <i [ngClass]="{'favorite-heart': data.isFavorite}" class="text-xl fa-heart fas"></i>
         </button>
-        <button class="bg-transparent p-0 border-none focus:outline-none">
+        <button (click)="this.buttonClockEvent($event)" class="bg-transparent p-0 border-none focus:outline-none">
           <i class="text-xl fa-trash fas hover:text-error-content/50 scale-90"></i>
         </button>
       </div>
