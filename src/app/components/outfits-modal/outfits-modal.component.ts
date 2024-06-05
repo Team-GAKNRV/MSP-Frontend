@@ -1,11 +1,8 @@
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { KeycloakService } from 'keycloak-angular';
 import { GetClothingItem } from '../../interfaces/clothing.interface';
 import { GetOutfit } from '../../interfaces/outfit.interface';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
 import { ModalDataService } from '../../services/modal-data.service';
-import { OutfitService } from '../../services/outfit.service';
 import { AddOutfitCardComponent } from "../add-outfit-card/add-outfit-card.component";
 
 @Component({
@@ -24,20 +21,19 @@ export class OutfitsModalComponent implements OnInit {
   selectedOutfit: GetOutfit | any;
   selectedOutfitPieces: GetClothingItem[] = [];
 
-  constructor(private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService, private modalDataService: ModalDataService, private outfitService: OutfitService) { }
+  constructor(private modalDataService: ModalDataService) { }
 
   ngOnInit(): void {
-    this.modalDataService.data$.subscribe(outfitData => {
+    this.modalDataService.outfit$.subscribe(outfitData => {
       this.selectedOutfit = outfitData;
 
-      if (this.selectedOutfit.pieces.length < 4) {
-        for (let piecesToAdd = 0; piecesToAdd <= (4 - this.selectedOutfit.pieces.length); piecesToAdd++) {
+      if (this.selectedOutfit) {
+        for (let piecesToAdd = 0; piecesToAdd < (4 - this.selectedOutfit.pieces.length); piecesToAdd++) {
           this.selectedOutfit.pieces.push({});
         }
-      }
 
-      this.selectedOutfitPieces = this.selectedOutfit.pieces;
-      console.log(this.selectedOutfitPieces);
+        this.selectedOutfitPieces = this.selectedOutfit.pieces;
+      }
     });
   }
 
