@@ -37,7 +37,7 @@ export class ClothingItemCardComponent {
       });
   }
 
-  async buttonClockEvent(event: Event): Promise<void> {
+  async deleteItem(event: Event): Promise<void> {
     event.stopPropagation();
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&clothing-item-id=${this.data._id}`;
     const response = await fetch(apiUrl, {
