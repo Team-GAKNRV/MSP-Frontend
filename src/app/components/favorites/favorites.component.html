@@ -1,7 +1,7 @@
-<div class="bg-gray-200">
+<div class="bg-gray-200 overflow-hiddenn">
     <div class="flex flex-col items-start ml-7 h-[50%]">
       <p class="mt-3 text-2xl">Kleiderschrank ></p>
-      <div class="flex flex-row gap-8">
+      <div class="flex flex-row gap-8 w-full overflow-x-auto">
         <ng-container *ngFor="let n of favoriteClothingItems; let i = index">
             <app-clothing-item-card
               class="w-1/5 p-2"
@@ -11,7 +11,7 @@
       </div>
       <div class="divider"></div>
         <p class="text-2xl">Outfits ></p>
-        <div class="flex flex-row gap-8">
+        <div class="flex flex-row gap-8 w-full overflow-x-auto">
           <ng-container *ngFor="let n of favoriteOutfits; let i = index">
               <app-outfit-card
                 class="w-1/5 p-2"
