@@ -1,10 +1,11 @@
 <div
   class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto hover:cursor-pointer transition ease-linear duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-slate-100"
+  (click)="onClick()"
 >
   <div class="h-60">
     <img
-      class="object-cover w-full h-full"
-      [src]="convertedImage"
+      class="object-cover w-full h-full select-none"
+      [src]="this.data.image"
       alt="Bildbeschreibung"
     />
   </div>
@@ -23,15 +24,15 @@
     <div class="flex w-full gap-3 mt-16 text-center place-content-between">
       <label
         class="inline-block w-full px-3 overflow-hidden bg-gray-400 rounded-full whitespace-nowrap overflow-ellipsis hover:overflow-visible"
-      >{{ this.data.brand }}
+        >{{ this.data.brand }}
       </label>
       <label
         class="inline-block w-full px-3 overflow-hidden bg-gray-400 rounded-full whitespace-nowrap overflow-ellipsis hover:overflow-visible"
-      >{{ this.data.masterCategory }}
+        >{{ this.data.masterCategory }}
       </label>
       <label
         class="inline-block w-full px-3 overflow-hidden bg-gray-400 rounded-full whitespace-nowrap overflow-ellipsis hover:overflow-visible"
-      >{{ this.data.usage }}
+        >{{ this.data.usage }}
       </label>
     </div>
   </div>

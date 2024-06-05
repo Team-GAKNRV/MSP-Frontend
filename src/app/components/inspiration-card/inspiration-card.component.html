@@ -1,0 +1,42 @@
+<div
+  class="inline-block bg-white hover:bg-slate-100 shadow-lg mx-auto mt-5 rounded-[2rem] w-72 transition hover:-translate-y-1 duration-300 ease-linear hover:cursor-pointer overflow-hidden hover:scale-105"
+>
+  <div class="grid grid-cols-2 grid-rows-2 h-60">
+    <img class="w-full h-full object-cover" [src]="this.isImageAtIndex(0)" />
+    <img class="w-full h-full object-cover" [src]="this.isImageAtIndex(1)" />
+    <img class="w-full h-full object-cover" [src]="this.isImageAtIndex(2)" />
+    <img class="w-full h-full object-cover" [src]="this.isImageAtIndex(3)" />
+  </div>
+  <div class="flex flex-col bg-gray-300 p-4 w-full">
+    <div class="flex place-content-between">
+      <button
+        class="bg-transparent p-0 border-none focus:outline-none items-center"
+      >
+        <i
+          (click)="this.rerollOutfit(this.getCommonUsage(this.data))"
+          class="fa-rotate-right text-gray-500 text-xl hover:text-blue-700 fa fas"
+        ></i>
+      </button>
+      <button
+        class="bg-transparent p-0 border-none focus:outline-none items-center"
+        *ngIf="showAddButton"
+      >
+        <i
+          (click)="this.addOutfit(this.data)"
+          class="text-gray-500 text-xl hover:text-green-700 fa fa-plus fas"
+        ></i>
+      </button>
+    </div>
+    <div class="flex place-content-between gap-3 mt-16 text-center">
+      <label class="bg-gray-400 px-3 rounded-full w-full">{{
+        this.getCommonColor(this.data)
+      }}</label>
+      <label class="bg-gray-400 px-3 rounded-full w-full">{{
+        this.getCommonSeason(this.data)
+      }}</label>
+      <label class="bg-gray-400 px-3 rounded-full w-full">{{
+        this.getCommonUsage(this.data)
+      }}</label>
+    </div>
+  </div>
+</div>
