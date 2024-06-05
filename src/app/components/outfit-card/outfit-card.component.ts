@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { KeycloakService } from 'keycloak-angular';
 import { CommonModule } from '@angular/common';
-import {ClothingImageConverter} from "../../services/clothing-image-converter.service";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 
 
 @Component({
@@ -11,26 +10,28 @@ import {ClothingImageConverter} from "../../services/clothing-image-converter.se
   templateUrl: './outfit-card.component.html',
   styleUrl: './outfit-card.component.css'
 })
-export class OutfitCardComponent{
-
+export class OutfitCardComponent {
   @Input() data: any;
-  constructor(private keycloakService: KeycloakService, private cic: ClothingImageConverter){}
+
+  @Output() itemClicked = new EventEmitter<any>();
+
+  constructor(private keycloakService: KeycloakService) { }
 
   isImageAtIndex(num: number): string {
-    const pieces: { [key: string]: any }[] = this.data.pieces;
-    const emptyImage = 'iVBORw0KGgoAAAANSUhEUgAAAfQAAAF3CAYAAABT8rn8AAAC7klEQVR4Xu3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuBnPMAAHXcKOOAAAAAElFTkSuQmCC';
+    const pieces: { [key: string]: any; }[] = this.data.pieces;
+    const emptyImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAF3CAYAAABT8rn8AAAC7klEQVR4Xu3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuBnPMAAHXcKOOAAAAAElFTkSuQmCC';
     if (pieces[num] && pieces[num]['image']) {
-      return this.cic.base64ToImage(pieces[num]['image']);
+      return pieces[num]['image'];
     } else {
-      return this.cic.base64ToImage(emptyImage);
+      return emptyImage;
     }
   }
 
   getCommonUsage(data: any): string {
-    const pieces: { [key: string]: any }[] = data.pieces;
+    const pieces: { [key: string]: any; }[] = data.pieces;
     const usages: any[] = [];
     let mostCommon: string = 'NA';
-    for (let i = 0; i < pieces.length; i++){
+    for (let i = 0; i < pieces.length; i++) {
       usages.push(pieces[i]['usage']);
     }
     mostCommon = usages.reduce((a, b, i, arr) => arr.filter(v => v === a).length > arr.filter(v => v === b).length ? a : b);
@@ -38,17 +39,17 @@ export class OutfitCardComponent{
   }
 
   getCommonSeason(data: any): string {
-    const pieces: { [key: string]: any }[] = data.pieces;
+    const pieces: { [key: string]: any; }[] = data.pieces;
     const seasons: any[] = [];
     let mostCommon: string = 'NA';
-    for (let i = 0; i < pieces.length; i++){
+    for (let i = 0; i < pieces.length; i++) {
       seasons.push(pieces[i]['season']);
     }
     mostCommon = seasons.reduce((a, b, i, arr) => arr.filter(v => v === a).length > arr.filter(v => v === b).length ? a : b);
     return mostCommon;
   }
 
-  createRequestBody(updatedOutfit: { pieces: string | any[], isFavorite: boolean; }){
+  createRequestBody(updatedOutfit: { pieces: string | any[], isFavorite: boolean; }) {
     const requestBody = {
       pieces: [] as string[],
       isFavorite: updatedOutfit.isFavorite
@@ -59,7 +60,7 @@ export class OutfitCardComponent{
     return requestBody;
   }
 
-  async updateOutfit(outfitId: string,updatedOutfit: any): Promise<void>{
+  async updateOutfit(outfitId: string, updatedOutfit: any): Promise<void> {
     const apiUrl = `http://localhost:8080/api/v1/user/outfit?outfit-id=${outfitId}`;
     const requestBody = this.createRequestBody(updatedOutfit);
     const response = await fetch(apiUrl, {
@@ -83,12 +84,15 @@ export class OutfitCardComponent{
     this.data.isFavorite = !this.data.isFavorite;
     console.log(this.data);
     await this.updateOutfit(this.data._id, this.data)
-    .then(() => {
-      console.log('Outfit successfully updated.');
-    })
-    .catch(error => {
-      console.error('Error updating Outfit', error);
-    });
-    }
+      .then(() => {
+        console.log('Outfit successfully updated.');
+      })
+      .catch(error => {
+        console.error('Error updating Outfit', error);
+      });
+  }
 
+  onClick(): void {
+    this.itemClicked.emit(this.data);
+  }
 }

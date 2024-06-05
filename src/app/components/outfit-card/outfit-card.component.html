@@ -1,19 +1,32 @@
-<div class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto hover:cursor-pointer transition ease-linear duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-slate-100">
-  <div class="h-60 grid grid-rows-2 grid-cols-2">
-    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(0)">
-    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(1)">
-    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(2)">
-    <img class="h-full w-full object-cover" [src]="this.isImageAtIndex(3)">
+<div
+  class="bg-white shadow-lg mt-5 rounded-[2rem] w-72 overflow-hidden inline-block mx-auto hover:cursor-pointer transition ease-linear duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-slate-100"
+  (click)="onClick()"
+>
+  <div class="grid grid-cols-2 grid-rows-2 h-60">
+    <img class="object-cover w-full h-full" [src]="isImageAtIndex(0)" />
+    <img class="object-cover w-full h-full" [src]="isImageAtIndex(1)" />
+    <img class="object-cover w-full h-full" [src]="isImageAtIndex(2)" />
+    <img class="object-cover w-full h-full" [src]="isImageAtIndex(3)" />
   </div>
-  <div class="flex flex-col bg-gray-300 p-4 w-full">
+  <div class="flex flex-col w-full p-4 bg-gray-300">
     <div class="flex place-content-between">
-      <button (click)="toggleFavorite()" class="bg-transparent p-0 border-none focus:outline-none items-center">
-        <i [ngClass]="{'favorite-heart': data.isFavorite}" class="text-xl fa-heart fas"></i>
+      <button
+        (click)="toggleFavorite()"
+        class="items-center p-0 bg-transparent border-none focus:outline-none"
+      >
+        <i
+          [ngClass]="{ 'favorite-heart': data.isFavorite }"
+          class="text-xl fa-heart fas"
+        ></i>
       </button>
     </div>
-    <div class="flex place-content-between gap-3 mt-16 text-center">
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.getCommonSeason(this.data) }}</label>
-      <label class="bg-gray-400 px-3 rounded-full w-full">{{ this.getCommonUsage(this.data) }}</label>
+    <div class="flex gap-3 mt-16 text-center place-content-between">
+      <label class="w-full px-3 bg-gray-400 rounded-full">{{
+        getCommonSeason(data)
+      }}</label>
+      <label class="w-full px-3 bg-gray-400 rounded-full">{{
+        getCommonUsage(data)
+      }}</label>
     </div>
   </div>
 </div>
