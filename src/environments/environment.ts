@@ -5,4 +5,8 @@ export const environment = {
     JAVA_BACKEND_API_URI: "http://localhost:8080",
     JAVA_BACKEND_API_ADD_CLOTHING_ITEM_ENDPOINT: "api/v1/user/clothing-item",
     JAVA_BACKEND_API_UPDATE_CLOTHING_ITEM_ENDPOINT: "api/v1/user/clothing-item",
+
+    JAVA_BACKEND_API_GET_ALL_OUTFITS_ENDPOINT: "api/v1/user/outfits",
+    JAVA_BACKEND_API_ADD_OUTFIT_ENDPOINT: "api/v1/user/outfit",
+    JAVA_BACKEND_API_UPDATE_OUTFIT_ENDPOINT: "api/v1/user/outfit",
 };
