@@ -58,7 +58,7 @@ export class ClosetComponent implements OnInit {
       console.error(response.status);
     }
   }
-  
+
 
   ngOnInit(): void {
     this.modalDataService.needsReload$.subscribe(needsReload => {
@@ -82,7 +82,7 @@ export class ClosetComponent implements OnInit {
   }
 
   openModal(data: any) {
-    this.modalDataService.setData(data);
+    this.modalDataService.setClothingData(data);
     this.showModal = true;
   }
 
@@ -99,7 +99,7 @@ export class ClosetComponent implements OnInit {
           const classifiedClothingItem = new ClothingItem('', '', '', classificationInformation.baseColour, classificationInformation.masterCategory, classificationInformation.subCategory, classificationInformation.articleType, classificationInformation.season, classificationInformation.usage, false);
 
           this.modalDataService.setFile(this.selectedFile);
-          this.modalDataService.setData(classifiedClothingItem);
+          this.modalDataService.setClothingData(classifiedClothingItem);
           this.saveAsNewItem = true;
           this.showModal = true;
         },

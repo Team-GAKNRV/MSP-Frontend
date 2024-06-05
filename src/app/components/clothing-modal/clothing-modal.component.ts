@@ -48,8 +48,9 @@ export class ClothingModalComponent implements OnInit {
   constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService, private modalDataService: ModalDataService) { }
 
   ngOnInit() {
-    this.modalDataService.data$.subscribe(clothingItemData => {
+    this.modalDataService.clothing$.subscribe(clothingItemData => {
       this.clothingItem = clothingItemData;
+
       if (this.clothingItem) {
         this.fillInClothingItemData();
       }
@@ -57,6 +58,7 @@ export class ClothingModalComponent implements OnInit {
 
     this.modalDataService.file$.subscribe(clothingImage => {
       this.clothingImage = clothingImage;
+
       if (this.clothingImage) {
         this.convertClothingImageToBase64();
       }

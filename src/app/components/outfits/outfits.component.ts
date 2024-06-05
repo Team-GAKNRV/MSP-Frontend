@@ -66,8 +66,8 @@ export class OutfitsComponent implements OnInit {
     }
   }
 
-  openModal(data: any) {
-    this.modalDataService.setData(data);
+  openModal(data: GetOutfit) {
+    this.modalDataService.setOutfitData(data);
     this.showModal = true;
   }
 
