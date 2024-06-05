@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
-import { KeycloakService } from 'keycloak-angular'
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
+import { ClothingItem } from '../../classes/clothing-item.class';
+import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { ClothingService } from '../../services/clothing.service';
 
 @Component({
   selector: 'app-clothing-item-card',
@@ -10,45 +12,32 @@ import { CommonModule } from '@angular/common';
   templateUrl: './clothing-item-card.component.html',
   styleUrl: './clothing-item-card.component.css'
 })
-export class ClothingItemCardComponent implements OnInit{
+export class ClothingItemCardComponent {
 
   @Input() data: any;
+  @Output() itemClicked = new EventEmitter<any>();
+
   convertedImage: string | undefined;
 
-  constructor(private clothingImageConverter: ClothingImageConverter, private keycloakService: KeycloakService) { }
+  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService) { }
 
-  async updateClothingItem(clothingItemId: string, updatedClothingItem: any): Promise<void> {
-    const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?clothing-item-id=${clothingItemId}`;
-    const response = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(updatedClothingItem)
-    });
+  async toggleFavorite(event: Event): Promise<void> {
+    event.stopPropagation();
 
-    if (response.ok) {
-      console.log('Clothing item updated successfully');
-    } else {
-      console.error(`Failed to update clothing item: ${response.status}`);
-    }
-  }
+    const bearerToken = await this.keycloakService.getToken();
+    const base64Image = this.clothingImageConverterService.stripDataUrlPrefix(this.data.image);
+    const updatedClothingItem = new ClothingItem(this.data.name, base64Image, this.data.brand, this.data.color, this.data.masterCategory, this.data.subCategory, this.data.type, this.data.season, this.data.usage, !this.data.isFavorite);
 
-  async toggleFavorite(): Promise<void> {
-    this.data.isFavorite = !this.data.isFavorite;
-    await this.updateClothingItem(this.data._id, this.data)
+    await this.clothingService.updateClothingItem(bearerToken, this.data._id, updatedClothingItem)
       .then(() => {
-        console.log('Clothing item successfully updated.');
+        this.data.isFavorite = !this.data.isFavorite;
       })
       .catch(error => {
         console.error('Error updating clothing item:', error);
       });
   }
 
-  ngOnInit(): void {
-    this.convertedImage = this.clothingImageConverter.base64ToImage(this.data.image);
+  onClick(): void {
+    this.itemClicked.emit(this.data);
   }
-
 }

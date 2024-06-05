@@ -10,6 +10,13 @@
   <app-clothing-item-card
     *ngFor="let n of numberOfCards"
     class="w-1/5 p-2"
+    (itemClicked)="openModal($event)"
     [data]="n"
   ></app-clothing-item-card>
+  <app-modal-wrapper [showModal]="showModal">
+    <app-clothing-modal
+      (close)="closeModal()"
+      [saveAsNewClothingItem]="saveAsNewItem"
+    ></app-clothing-modal>
+  </app-modal-wrapper>
 </div>

@@ -8,7 +8,7 @@ export class ClothingItem {
     public type: string;
     public season: string;
     public usage: string;
-    private isFavorite: boolean;
+    public isFavorite: boolean;
 
     constructor(name: string, image: string, brand: string, color: string, masterCategory: string, subCategory: string, type: string, season: string, usage: string, isFavorite: boolean) {
         this.name = name;
