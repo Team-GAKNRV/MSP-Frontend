@@ -20,16 +20,19 @@ export class OutfitsModalComponent implements OnInit {
   needsReload: boolean = false;
   selectedOutfit: GetOutfit | any;
   selectedOutfitPieces: GetClothingItem[] = [];
+  emptyOutfitPiecesCount: any[] = [];
 
   constructor(private modalDataService: ModalDataService) { }
 
   ngOnInit(): void {
     this.modalDataService.outfit$.subscribe(outfitData => {
       this.selectedOutfit = outfitData;
+      this.selectedOutfitPieces = [];
+      this.emptyOutfitPiecesCount = [];
 
       if (this.selectedOutfit) {
         for (let piecesToAdd = 0; piecesToAdd < (4 - this.selectedOutfit.pieces.length); piecesToAdd++) {
-          this.selectedOutfit.pieces.push({});
+          this.emptyOutfitPiecesCount.push({});
         }
 
         this.selectedOutfitPieces = this.selectedOutfit.pieces;
