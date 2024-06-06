@@ -1,27 +1,29 @@
-import { Component, ViewChild } from '@angular/core';
-import { ClothingItemCardComponent } from '../clothing-item-card/clothing-item-card.component';
-import { KeycloakService } from 'keycloak-angular';
 import { CommonModule, NgForOf } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
+import { GetClothingItem } from '../../interfaces/clothing.interface';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { ClothingItemCardComponent } from '../clothing-item-card/clothing-item-card.component';
 import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
 
 
 
 @Component({
-    selector: 'app-favorites',
-    standalone: true,
-    templateUrl: './favorites.component.html',
-    styleUrl: './favorites.component.css',
-    imports: [NgForOf, ClothingItemCardComponent, CommonModule, OutfitCardComponent]
+  selector: 'app-favorites',
+  standalone: true,
+  templateUrl: './favorites.component.html',
+  styleUrl: './favorites.component.css',
+  imports: [NgForOf, ClothingItemCardComponent, CommonModule, OutfitCardComponent]
 })
-export class FavoritesComponent{
+export class FavoritesComponent {
   @ViewChild(ClothingItemCardComponent) child: any;
   clothingItems: any[] = [];
   outfits: any[] = [];
   favoriteClothingItems = [];
   favoriteOutfits = [];
-  
-  
-  constructor(private keycloakService: KeycloakService) { }
+
+
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) { }
 
   async getAllClothingItems(): Promise<void> {
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-items?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
@@ -34,8 +36,11 @@ export class FavoritesComponent{
     });
 
     if (response.ok) {
-      const items  = await response.json();
+      const items = await response.json();
       this.clothingItems = items;
+      this.clothingItems.forEach((clothingItem: GetClothingItem) => {
+        clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
+      });
       this.favoriteClothingItems = items.filter((item: { isFavorite: any; }) => item.isFavorite);
     }
   }
@@ -50,7 +55,7 @@ export class FavoritesComponent{
       }
     });
     if (response.ok) {
-      const items  = await response.json();
+      const items = await response.json();
       this.outfits = items;
       this.favoriteOutfits = items.filter((item: { isFavorite: any; }) => item.isFavorite);
     } else {
