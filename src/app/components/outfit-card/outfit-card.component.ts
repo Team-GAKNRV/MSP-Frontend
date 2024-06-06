@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { GetClothingItem } from '../../interfaces/clothing.interface';
+import { AddOutfit, GetOutfit } from '../../interfaces/outfit.interface';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { OutfitService } from '../../services/outfit.service';
 
 
 @Component({
@@ -11,17 +15,21 @@ import { KeycloakService } from 'keycloak-angular';
   styleUrl: './outfit-card.component.css'
 })
 export class OutfitCardComponent {
-  @Input() data: any;
+  @Input() data: GetOutfit | any;
 
   @Output() itemClicked = new EventEmitter<any>();
 
-  constructor(private keycloakService: KeycloakService) { }
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private outfitService: OutfitService) { }
 
   isImageAtIndex(num: number): string {
     const pieces: { [key: string]: any; }[] = this.data.pieces;
     const emptyImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAF3CAYAAABT8rn8AAAC7klEQVR4Xu3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuBnPMAAHXcKOOAAAAAElFTkSuQmCC';
     if (pieces[num] && pieces[num]['image']) {
-      return pieces[num]['image'];
+      if (!pieces[num]['image'].includes(this.clothingImageConverterService.BASE64_DATA_URL_SUBSTRING)) {
+        return this.clothingImageConverterService.addDataUrlPrefix(pieces[num]['image']);
+      } else {
+        return pieces[num]['image'];
+      }
     } else {
       return emptyImage;
     }
@@ -49,47 +57,27 @@ export class OutfitCardComponent {
     return mostCommon;
   }
 
-  createRequestBody(updatedOutfit: { pieces: string | any[], isFavorite: boolean; }) {
-    const requestBody = {
-      pieces: [] as string[],
-      isFavorite: updatedOutfit.isFavorite
+  createRequestBody(updatedOutfit: GetOutfit) {
+    const addOutfit: AddOutfit = {
+      pieces: updatedOutfit.pieces.map((piece: GetClothingItem) => piece._id),
+      isFavorite: !updatedOutfit.isFavorite
     };
-    for (let i = 0; i < updatedOutfit.pieces.length; i++) {
-      requestBody.pieces.push(updatedOutfit.pieces[i]._id);
-    }
-    return requestBody;
+
+    return addOutfit;
   }
 
-  async updateOutfit(outfitId: string, updatedOutfit: any): Promise<void> {
-    const apiUrl = `http://localhost:8080/api/v1/user/outfit?outfit-id=${outfitId}`;
-    const requestBody = this.createRequestBody(updatedOutfit);
-    const response = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    });
+  async toggleFavorite(event: Event): Promise<void> {
+    event.stopPropagation();
+
+    const bearerToken = await this.keycloakService.getToken();
+    const updatedOutfit = this.createRequestBody(this.data);
+    const response = await this.outfitService.updateOutfit(bearerToken, this.data._id, updatedOutfit);
 
     if (response.ok) {
-      console.log('Outfit successfully updated.');
+      this.data.isFavorite = !this.data.isFavorite;
     } else {
       console.error(`Error updating Outfit: ${response.status}`);
     }
-  }
-
-  async toggleFavorite(): Promise<void> {
-    this.data.isFavorite = !this.data.isFavorite;
-    console.log(this.data);
-    await this.updateOutfit(this.data._id, this.data)
-      .then(() => {
-        console.log('Outfit successfully updated.');
-      })
-      .catch(error => {
-        console.error('Error updating Outfit', error);
-      });
   }
 
   onClick(): void {
