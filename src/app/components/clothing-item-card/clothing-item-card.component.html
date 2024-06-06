@@ -12,15 +12,14 @@
   <div class="flex flex-col w-full p-4 bg-gray-300">
     <div class="flex place-content-between">
       <h3 class="text-xl leading-5">{{ this.data.name }}</h3>
-      <button
-        (click)="toggleFavorite($event)"
-        class="items-center p-0 bg-transparent border-none focus:outline-none"
-      >
-        <i
-          [ngClass]="{ 'favorite-heart': data.isFavorite }"
-          class="text-xl fa-heart fas"
-        ></i>
-      </button>
+      <div class="flex items-center space-x-3">
+        <button (click)="toggleFavorite($event)" class="bg-transparent p-0 border-none focus:outline-none">
+          <i [ngClass]="{'favorite-heart': data.isFavorite}" class="text-xl fa-heart fas"></i>
+        </button>
+        <button (click)="this.deleteItem($event)" class="bg-transparent p-0 border-none focus:outline-none">
+          <i class="text-xl fa-trash fas hover:text-error-content/50 scale-90"></i>
+        </button>
+      </div>
     </div>
     <div class="flex w-full gap-3 mt-16 text-center place-content-between">
       <label

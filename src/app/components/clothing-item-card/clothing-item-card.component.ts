@@ -37,7 +37,27 @@ export class ClothingItemCardComponent {
       });
   }
 
+  async deleteItem(event: Event): Promise<void> {
+    event.stopPropagation();
+    const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&clothing-item-id=${this.data._id}`;
+    const response = await fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      console.log('Clothing item deleted');
+      window.location.reload();
+    } else {
+      console.error(`Failed to update clothing item: ${response.status}`);
+    }
+  }
+
   onClick(): void {
     this.itemClicked.emit(this.data);
   }
+
 }
