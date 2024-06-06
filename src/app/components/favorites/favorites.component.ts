@@ -42,6 +42,11 @@ export class FavoritesComponent {
         clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
       });
       this.favoriteClothingItems = items.filter((item: { isFavorite: any; }) => item.isFavorite);
+    } else {
+      this.modalDataService.setError({
+        title: 'Fehler beim Laden des Kleiderschranks!',
+        message: 'Deine Klamotten konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 
@@ -59,7 +64,10 @@ export class FavoritesComponent {
       this.outfits = items;
       this.favoriteOutfits = items.filter((item: { isFavorite: any; }) => item.isFavorite);
     } else {
-      console.error(response.status);
+      this.modalDataService.setError({
+        title: 'Fehler beim Favorisieren!',
+        message: 'Das Kleidungsstück konnte nicht favorisiert werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 

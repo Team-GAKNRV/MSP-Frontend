@@ -95,14 +95,32 @@ export class ClothingModalComponent implements OnInit {
         const clothingItemToUpload = new ClothingItem(this.nameValue, base64Image, this.brandValue, this.baseColourValue, this.masterCategoryValue, this.subCategoryValue, this.articleTypeValue, this.seasonValue, this.usageValue, this.clothingItem.isFavorite);
         const filledInClothingItem = this.clothingService.createStaticClothingInformation(clothingItemToUpload);
 
-        await this.clothingService.addClothingItem(bearerToken, userId, filledInClothingItem).then(() => this.close.emit());
+        const response = await this.clothingService.addClothingItem(bearerToken, userId, filledInClothingItem);
+
+        if (response.ok) {
+          this.close.emit();
+        } else {
+          this.modalDataService.setError({
+            title: 'Fehler beim Speichern des Kleidungsstücks!',
+            message: 'Dein Kleidungsstück konnte nicht gespeichert werden. Bitte überprüfe, dass du genügend Klamotten im Kleiderschrank hast und versuche es erneut.'
+          });
+        }
       }
 
     } else {
       const base64Image = this.clothingImageConverterService.stripDataUrlPrefix(this.clothingItem.image);
       let clothingItemToUpload = new ClothingItem(this.nameValue, base64Image, this.brandValue, this.baseColourValue, this.masterCategoryValue, this.subCategoryValue, this.articleTypeValue, this.seasonValue, this.usageValue, this.clothingItem.isFavorite);
 
-      await this.clothingService.updateClothingItem(bearerToken, this.clothingItem._id, clothingItemToUpload).then(() => this.close.emit());
+      const response = await this.clothingService.updateClothingItem(bearerToken, this.clothingItem._id, clothingItemToUpload);
+
+      if (response.ok) {
+        this.close.emit();
+      } else {
+        this.modalDataService.setError({
+          title: 'Fehler beim Aktualisieren des Kleidungsstücks!',
+          message: 'Dein Kleidungsstück konnte nicht aktualisiert werden. Bitte überprüfe, dass du genügend Klamotten im Kleiderschrank hast und versuche es erneut.'
+        });
+      }
     }
 
     this.modalDataService.setNeedsReload(true);

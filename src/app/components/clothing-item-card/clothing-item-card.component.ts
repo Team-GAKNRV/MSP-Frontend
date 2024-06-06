@@ -29,13 +29,17 @@ export class ClothingItemCardComponent {
     const base64Image = this.clothingImageConverterService.stripDataUrlPrefix(this.data.image);
     const updatedClothingItem = new ClothingItem(this.data.name, base64Image, this.data.brand, this.data.color, this.data.masterCategory, this.data.subCategory, this.data.type, this.data.season, this.data.usage, !this.data.isFavorite);
 
-    await this.clothingService.updateClothingItem(bearerToken, this.data._id, updatedClothingItem)
-      .then(() => {
-        this.data.isFavorite = !this.data.isFavorite;
-      })
-      .catch(error => {
-        console.error('Error updating clothing item:', error);
+    const response = await this.clothingService.updateClothingItem(bearerToken, this.data._id, updatedClothingItem);
+
+    if (response.ok) {
+      this.data.isFavorite = !this.data.isFavorite;
+      this.modalDataService.setNeedsReload(true);
+    } else {
+      this.modalDataService.setError({
+        title: 'Fehler beim Favorisieren!',
+        message: 'Das Kleidungsstück konnte nicht favorisiert werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
       });
+    }
   }
 
   async deleteItem(event: Event): Promise<void> {
@@ -52,7 +56,10 @@ export class ClothingItemCardComponent {
     if (response.ok) {
       this.modalDataService.setNeedsReload(true);
     } else {
-      console.error(`Failed to update clothing item: ${response.status}`);
+      this.modalDataService.setError({
+        title: 'Fehler beim Löschen!',
+        message: 'Das Kleidungsstück konnte nicht gelöscht werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 

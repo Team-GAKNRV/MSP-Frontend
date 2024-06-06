@@ -1,6 +1,7 @@
 import { NgForOf } from "@angular/common";
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { KeycloakService } from "keycloak-angular";
+import { ModalDataService } from "../../services/modal-data.service";
 import { InspirationCardComponent } from "../inspiration-card/inspiration-card.component";
 
 @Component({
@@ -18,7 +19,7 @@ export class InspirationsComponent implements OnInit {
   @ViewChild(InspirationCardComponent) child: any;
   numberOfCards = [];
 
-  constructor(private keycloakService: KeycloakService) {
+  constructor(private keycloakService: KeycloakService, private modalDataService: ModalDataService) {
   }
 
   async getAllOutfits(): Promise<void> {
@@ -34,7 +35,10 @@ export class InspirationsComponent implements OnInit {
     if (response.ok) {
       this.numberOfCards = await response.json();
     } else {
-      window.alert("Fehlermeldung: Es konnten keine Outfits generiert werden. Bitte laden sie die Seite neu oder fügen sie neue Kleidungsstücke in ihren Kleiderschrank hinzu.");
+      this.modalDataService.setError({
+        title: 'Fehler beim Aktualisieren des Outfits!',
+        message: 'Dein Outfit konnte nicht aktualisiert werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 

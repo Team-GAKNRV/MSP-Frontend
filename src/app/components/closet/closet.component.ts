@@ -55,7 +55,10 @@ export class ClosetComponent implements OnInit {
         card.image = this.clothingImageConverterService.addDataUrlPrefix(card.image);
       });
     } else {
-      console.error(response.status);
+      this.modalDataService.setError({
+        title: 'Fehler beim Laden des Kleiderschranks!',
+        message: 'Deine Klamotten konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 
@@ -103,10 +106,16 @@ export class ClosetComponent implements OnInit {
           this.saveAsNewItem = true;
           this.showModal = true;
         },
-        (error: any) => console.error('Upload failed', error)
+        (error: any) => this.modalDataService.setError({
+          title: 'Fehler beim Hochladen des Bildes!',
+          message: 'Das Bild konnte nicht hochgeladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+        })
       );
     } else {
-      console.error('No file selected');
+      this.modalDataService.setError({
+        title: 'Kein Bild ausgewählt!',
+        message: 'Das Klassifizierungsmodell kann nur Bilder erkennen. Bitte versuche es erneut.'
+      });
     }
   }
 

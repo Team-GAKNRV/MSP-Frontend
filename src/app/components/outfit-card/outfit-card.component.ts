@@ -77,8 +77,12 @@ export class OutfitCardComponent {
 
     if (response.ok) {
       this.data.isFavorite = !this.data.isFavorite;
+      this.modalDataService.setNeedsReload(true);
     } else {
-      console.error(`Error updating Outfit: ${response.status}`);
+      this.modalDataService.setError({
+        title: 'Fehler beim Favorisieren!',
+        message: 'Das Kleidungsstück konnte nicht favorisiert werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 
@@ -100,7 +104,10 @@ export class OutfitCardComponent {
     if (response.ok) {
       this.modalDataService.setNeedsReload(true);
     } else {
-      console.error(`Failed to update clothing item: ${response.status}`);
+      this.modalDataService.setError({
+        title: 'Fehler beim Löschen!',
+        message: 'Das Kleidungsstück konnte nicht gelöscht werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 }

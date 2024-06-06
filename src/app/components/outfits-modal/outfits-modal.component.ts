@@ -69,7 +69,10 @@ export class OutfitsModalComponent implements OnInit {
           clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
         });
       } else {
-        console.error(response.status);
+        this.modalDataService.setError({
+          title: 'Fehler beim Laden der Outfits!',
+          message: 'Deine Outfits konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+        });
       }
     }
   }
@@ -99,7 +102,10 @@ export class OutfitsModalComponent implements OnInit {
       this.modalDataService.setNeedsReload(true);
       this.close.emit();
     } else {
-      console.error(`Error updating Outfit: ${response.status}`);
+      this.modalDataService.setError({
+        title: 'Fehler beim Aktualisieren des Outfits!',
+        message: 'Dein Outfit konnte nicht aktualisiert werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 

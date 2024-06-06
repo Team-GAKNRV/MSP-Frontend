@@ -62,7 +62,10 @@ export class OutfitsComponent implements OnInit {
           });
         });
       } else {
-        console.error(response.status);
+        this.modalDataService.setError({
+          title: 'Fehler beim Laden der Outfits!',
+          message: 'Deine Outfits konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+        });
       }
     }
   }

@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakService } from 'keycloak-angular';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { ModalDataService } from '../../services/modal-data.service';
 
 @Component({
   selector: 'app-inspiration-card',
@@ -16,7 +17,7 @@ export class InspirationCardComponent {
 
   showAddButton: boolean = true;
 
-  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) { }
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private modalDataService: ModalDataService) { }
 
   isImageAtIndex(num: number): string {
     const pieces: { [key: string]: any; }[] = this.data.pieces;
@@ -93,10 +94,10 @@ export class InspirationCardComponent {
       this.data = await response.json();
       this.showAddButton = true;
     } else {
-      window.alert(
-        'Fehlermeldung: Es konnten keine Outfits generiert werden. Bitte laden sie die Seite neu oder fügen sie neue Kleidungsstücke in ihren Kleiderschrank hinzu.'
-      );
-      console.log(response.status);
+      this.modalDataService.setError({
+        title: 'Fehler beim Laden von Inspirationen!',
+        message: 'Es konnten keine Inspirationen erstellt werden. Bitte überprüfe, dass du genügend Klamotten im Kleiderschrank hast und versuche es erneut.'
+      });
     }
   }
 
@@ -123,7 +124,10 @@ export class InspirationCardComponent {
     if (response.ok) {
       this.showAddButton = false;
     } else {
-      console.log(response.status);
+      this.modalDataService.setError({
+        title: 'Fehler beim Hinzufügen des Outfits!',
+        message: 'Dein Outfit konnte nicht hinzugefügt werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 }

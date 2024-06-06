@@ -40,6 +40,11 @@ export class HomeComponent {
       this.numberOfCardsClothing.forEach((card: ClothingItem) => {
         card.image = this.clothingImageConverterService.addDataUrlPrefix(card.image);
       });
+    } else {
+      this.modalDataService.setError({
+        title: 'Fehler beim Laden des Kleiderschranks!',
+        message: 'Deine Klamotten konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 
@@ -55,7 +60,10 @@ export class HomeComponent {
     if (response.ok) {
       this.numberOfCardsOutfit = await response.json();
     } else {
-      console.error(response.status);
+      this.modalDataService.setError({
+        title: 'Fehler beim Laden der Outfits!',
+        message: 'Deine Outfits konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+      });
     }
   }
 
