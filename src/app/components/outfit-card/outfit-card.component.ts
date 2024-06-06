@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { DELETE_OUTFIT_ERROR, FAVORIZE_OUTFIT_ERROR } from '../../constants/errors.constants';
 import { GetClothingItem } from '../../interfaces/clothing.interface';
 import { AddOutfit, GetOutfit } from '../../interfaces/outfit.interface';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
@@ -73,12 +74,18 @@ export class OutfitCardComponent {
 
     const bearerToken = await this.keycloakService.getToken();
     const updatedOutfit = this.createRequestBody(this.data);
-    const response = await this.outfitService.updateOutfit(bearerToken, this.data._id, updatedOutfit);
 
-    if (response.ok) {
-      this.data.isFavorite = !this.data.isFavorite;
-    } else {
-      console.error(`Error updating Outfit: ${response.status}`);
+    try {
+      const response = await this.outfitService.updateOutfit(bearerToken, this.data._id, updatedOutfit);
+
+      if (response.ok) {
+        this.data.isFavorite = !this.data.isFavorite;
+        this.modalDataService.setNeedsReload(true);
+      } else {
+        throw new Error();
+      }
+    } catch {
+      this.modalDataService.setError(FAVORIZE_OUTFIT_ERROR);
     }
   }
 
@@ -88,19 +95,24 @@ export class OutfitCardComponent {
 
   async deleteItem(event: Event): Promise<void> {
     event.stopPropagation();
-    const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&outfit-id=${this.data._id}`;
-    const response = await fetch(apiUrl, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
-        'Content-Type': 'application/json'
-      }
-    });
 
-    if (response.ok) {
-      this.modalDataService.setNeedsReload(true);
-    } else {
-      console.error(`Failed to update clothing item: ${response.status}`);
+    try {
+      const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&outfit-id=${this.data._id}`;
+      const response = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${await this.keycloakService.getToken()}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        this.modalDataService.setNeedsReload(true);
+      } else {
+        throw new Error();
+      }
+    } catch {
+      this.modalDataService.setError(DELETE_OUTFIT_ERROR);
     }
   }
 }

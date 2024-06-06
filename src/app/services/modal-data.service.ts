@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AddClothingItem, GetClothingItem } from '../interfaces/clothing.interface';
+import { CustomError } from '../interfaces/error.interface';
 import { AddOutfit, GetOutfit } from '../interfaces/outfit.interface';
 
 @Injectable({
@@ -13,6 +14,7 @@ export class ModalDataService {
     private saveAsNewOutfitSubject = new BehaviorSubject<boolean>(false);
     private fileSubject = new BehaviorSubject<any>(null);
     private needsReloadSubject = new BehaviorSubject<boolean>(false);
+    private errorSubject = new BehaviorSubject<CustomError | null>(null);
 
     clothing$ = this.clothingSubject.asObservable();
     outfit$ = this.outfitSubject.asObservable();
@@ -20,6 +22,7 @@ export class ModalDataService {
     saveAsNewOutfit$ = this.saveAsNewOutfitSubject.asObservable();
     file$ = this.fileSubject.asObservable();
     needsReload$ = this.needsReloadSubject.asObservable();
+    error$ = this.errorSubject.asObservable();
 
     setClothingData(data: GetClothingItem | AddClothingItem) {
         this.clothingSubject.next(data);
@@ -43,5 +46,9 @@ export class ModalDataService {
 
     setNeedsReload(needsReload: boolean) {
         this.needsReloadSubject.next(needsReload);
+    }
+
+    setError(error: CustomError) {
+        this.errorSubject.next(error);
     }
 }
