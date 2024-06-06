@@ -11,19 +11,21 @@ import { ModalDataService } from '../../services/modal-data.service';
   styleUrl: './error-wrapper.component.css'
 })
 export class ErrorWrapperComponent implements OnInit {
-  error: CustomError = { show: true, title: 'Fehler!', message: 'Ein unbekannter Fehler ist aufgetreten. Bitte versuche es noch einmal.' };
+  showError: boolean = false;
+  error: CustomError = { title: 'Fehler!', message: 'Ein unbekannter Fehler ist aufgetreten. Bitte versuche es noch einmal.' };
 
   constructor(private modalDataService: ModalDataService) { }
 
   ngOnInit(): void {
     this.modalDataService.error$.subscribe(errorData => {
-      if (errorData && errorData.show) {
+      if (errorData) {
+        this.showError = true;
         this.error = errorData;
       }
     });
   }
 
   handleCloseError() {
-    this.error.show = false;
+    this.showError = false;
   }
 }
