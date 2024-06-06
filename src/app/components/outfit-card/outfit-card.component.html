@@ -9,9 +9,9 @@
     <img class="object-cover w-full h-full" [src]="isImageAtIndex(3)" />
   </div>
   <div class="flex flex-col w-full p-4 bg-gray-300">
-    <div class="flex place-content-between">
+    <div class="flex justify-end w-full">
       <button
-        (click)="toggleFavorite()"
+        (click)="toggleFavorite($event)"
         class="items-center p-0 bg-transparent border-none focus:outline-none"
       >
         <i
