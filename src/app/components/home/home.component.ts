@@ -1,24 +1,25 @@
-import {Component, ViewChild} from '@angular/core';
-import {ClothingItemCardComponent} from '../clothing-item-card/clothing-item-card.component';
-import {KeycloakService} from 'keycloak-angular';
-import {CommonModule, NgForOf} from '@angular/common';
-import {OutfitCardComponent} from "../outfit-card/outfit-card.component";
-import {ClothingItem} from "../../classes/clothing-item.class";
-import {ClothingImageConverter} from "../../services/clothing-image-converter.service";
+import { CommonModule, NgForOf } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
+import { ClothingItem } from '../../classes/clothing-item.class';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { ClothingItemCardComponent } from '../clothing-item-card/clothing-item-card.component';
+import { OutfitCardComponent } from '../outfit-card/outfit-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  imports: [NgForOf, ClothingItemCardComponent, OutfitCardComponent, CommonModule]
+  imports: [NgForOf, ClothingItemCardComponent, OutfitCardComponent, CommonModule, RouterLink, RouterLinkActive]
 })
 export class HomeComponent {
   @ViewChild(ClothingItemCardComponent) child: any;
   numberOfCardsClothing = [];
   numberOfCardsOutfit = [];
 
-  constructor(private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService) {
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) {
   }
 
   async getAllClothingItems(): Promise<void> {
@@ -35,7 +36,7 @@ export class HomeComponent {
       this.numberOfCardsClothing = await response.json();
       this.numberOfCardsClothing.forEach((card: ClothingItem) => {
         card.image = this.clothingImageConverterService.addDataUrlPrefix(card.image);
-      })
+      });
     }
   }
 

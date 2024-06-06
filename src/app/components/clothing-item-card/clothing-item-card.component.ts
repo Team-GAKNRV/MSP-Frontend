@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { ClothingItem } from '../../classes/clothing-item.class';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
 import { ClothingService } from '../../services/clothing.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class ClothingItemCardComponent {
 
   convertedImage: string | undefined;
 
-  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService) { }
+  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) { }
 
   async toggleFavorite(event: Event): Promise<void> {
     event.stopPropagation();

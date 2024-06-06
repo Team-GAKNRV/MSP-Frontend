@@ -8,7 +8,7 @@ import { MasterCategory } from '../../enums/masterCategory.enum';
 import { Season } from '../../enums/season.enum';
 import { SubCategory } from '../../enums/subCategory.enum';
 import { Usage } from '../../enums/usage.enum';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
 import { ClothingService } from '../../services/clothing.service';
 import { ModalDataService } from '../../services/modal-data.service';
 import { InputComponent } from "../input/input.component";
@@ -45,7 +45,7 @@ export class ClothingModalComponent implements OnInit {
   subCategory = SubCategory;
   usage = Usage;
 
-  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService, private modalDataService: ModalDataService) { }
+  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private modalDataService: ModalDataService) { }
 
   ngOnInit() {
     this.modalDataService.clothing$.subscribe(clothingItemData => {
