@@ -97,6 +97,7 @@ export class ClothingModalComponent implements OnInit {
         const filledInClothingItem = this.clothingService.createStaticClothingInformation(clothingItemToUpload);
 
         try {
+          this.modalDataService.setShowLoadingScreen(true);
           const response = await this.clothingService.addClothingItem(bearerToken, userId, filledInClothingItem);
 
           if (response.ok) {
@@ -106,6 +107,8 @@ export class ClothingModalComponent implements OnInit {
           }
         } catch {
           this.modalDataService.setError(SAVE_CLOTHING_ITEM_ERROR);
+        } finally {
+          this.modalDataService.setShowLoadingScreen(false);
         }
       }
 
@@ -114,6 +117,7 @@ export class ClothingModalComponent implements OnInit {
       let clothingItemToUpload = new ClothingItem(this.nameValue, base64Image, this.brandValue, this.baseColourValue, this.masterCategoryValue, this.subCategoryValue, this.articleTypeValue, this.seasonValue, this.usageValue, this.clothingItem.isFavorite);
 
       try {
+        this.modalDataService.setShowLoadingScreen(true);
         const response = await this.clothingService.updateClothingItem(bearerToken, this.clothingItem._id, clothingItemToUpload);
 
         if (response.ok) {
@@ -123,6 +127,8 @@ export class ClothingModalComponent implements OnInit {
         }
       } catch {
         this.modalDataService.setError(UPDATE_CLOTHING_ITEM_ERROR);
+      } finally {
+        this.modalDataService.setShowLoadingScreen(false);
       }
     }
 

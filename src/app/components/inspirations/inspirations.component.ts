@@ -23,6 +23,8 @@ export class InspirationsComponent implements OnInit {
 
   async getAllOutfits(): Promise<void> {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/outfits/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -39,6 +41,8 @@ export class InspirationsComponent implements OnInit {
       }
     } catch {
       this.modalDataService.setError(UPDATE_OUTFIT_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 

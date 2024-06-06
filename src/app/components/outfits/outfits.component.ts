@@ -54,6 +54,7 @@ export class OutfitsComponent implements OnInit {
 
     if (userId) {
       try {
+        this.modalDataService.setShowLoadingScreen(true);
         const response = await this.outfitService.getAllOutfits(bearerToken, userId);
 
         if (response.ok) {
@@ -68,6 +69,8 @@ export class OutfitsComponent implements OnInit {
         }
       } catch {
         this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
+      } finally {
+        this.modalDataService.setShowLoadingScreen(false);
       }
     }
   }
