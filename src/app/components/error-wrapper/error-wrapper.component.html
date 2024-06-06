@@ -1,0 +1,22 @@
+<ng-content></ng-content>
+<div
+  *ngIf="error.show"
+  class="fixed inset-0 z-10 flex items-center justify-center w-full h-full bg-black bg-opacity-25"
+>
+  <div
+    class="relative flex flex-col items-start p-8 bg-white place-content-between w-[26rem] h-44 rounded-2xl"
+  >
+    <button
+      class="absolute text-2xl top-4 right-5 hover:text-gray-600"
+      (click)="handleCloseError()"
+    >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="flex items-center justify-between w-full gap-2">
+      <p class="text-3xl text-red-500">{{ error.title }}</p>
+    </div>
+    <div>
+      <p class="text-xl">{{ error.message }}</p>
+    </div>
+  </div>
+</div>
