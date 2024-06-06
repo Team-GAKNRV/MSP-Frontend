@@ -4,6 +4,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { GetClothingItem } from '../../interfaces/clothing.interface';
 import { AddOutfit, GetOutfit } from '../../interfaces/outfit.interface';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { ModalDataService } from '../../services/modal-data.service';
 import { OutfitService } from '../../services/outfit.service';
 
 
@@ -19,11 +20,12 @@ export class OutfitCardComponent {
 
   @Output() itemClicked = new EventEmitter<any>();
 
-  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private outfitService: OutfitService) { }
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private modalDataService: ModalDataService, private outfitService: OutfitService) { }
 
   isImageAtIndex(num: number): string {
     const pieces: { [key: string]: any; }[] = this.data.pieces;
     const emptyImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAF3CAYAAABT8rn8AAAC7klEQVR4Xu3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuBnPMAAHXcKOOAAAAAElFTkSuQmCC';
+
     if (pieces[num] && pieces[num]['image']) {
       if (!pieces[num]['image'].includes(this.clothingImageConverterService.BASE64_DATA_URL_SUBSTRING)) {
         return this.clothingImageConverterService.addDataUrlPrefix(pieces[num]['image']);
@@ -83,7 +85,7 @@ export class OutfitCardComponent {
   onClick(): void {
     this.itemClicked.emit(this.data);
   }
-  
+
   async deleteItem(event: Event): Promise<void> {
     event.stopPropagation();
     const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&outfit-id=${this.data._id}`;
@@ -96,8 +98,7 @@ export class OutfitCardComponent {
     });
 
     if (response.ok) {
-      console.log('Outfit deleted');
-      window.location.reload();
+      this.modalDataService.setNeedsReload(true);
     } else {
       console.error(`Failed to update clothing item: ${response.status}`);
     }
