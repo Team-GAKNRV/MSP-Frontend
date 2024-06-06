@@ -2,7 +2,7 @@ import { NgForOf, NgIf } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { KeycloakService } from "keycloak-angular";
 import { ClothingItem } from '../../classes/clothing-item.class';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
 import { ClothingService } from '../../services/clothing.service';
 import { ModalDataService } from '../../services/modal-data.service';
 import { ClassifiedClothingItem } from '../../types/classified-clothing-item.type';
@@ -37,7 +37,7 @@ export class ClosetComponent implements OnInit {
   selectedFile: File | null = null;
   numberOfCards = [];
 
-  constructor(private keycloakService: KeycloakService, private modalDataService: ModalDataService, private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverter) { }
+  constructor(private keycloakService: KeycloakService, private modalDataService: ModalDataService, private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverterService) { }
 
   async getAllClothingItems(): Promise<void> {
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-items?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
@@ -58,7 +58,7 @@ export class ClosetComponent implements OnInit {
       console.error(response.status);
     }
   }
-  
+
 
   ngOnInit(): void {
     this.modalDataService.needsReload$.subscribe(needsReload => {
@@ -82,7 +82,7 @@ export class ClosetComponent implements OnInit {
   }
 
   openModal(data: any) {
-    this.modalDataService.setData(data);
+    this.modalDataService.setClothingData(data);
     this.showModal = true;
   }
 
@@ -99,7 +99,7 @@ export class ClosetComponent implements OnInit {
           const classifiedClothingItem = new ClothingItem('', '', '', classificationInformation.baseColour, classificationInformation.masterCategory, classificationInformation.subCategory, classificationInformation.articleType, classificationInformation.season, classificationInformation.usage, false);
 
           this.modalDataService.setFile(this.selectedFile);
-          this.modalDataService.setData(classifiedClothingItem);
+          this.modalDataService.setClothingData(classifiedClothingItem);
           this.saveAsNewItem = true;
           this.showModal = true;
         },

@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {InspirationCardComponent} from "../inspiration-card/inspiration-card.component";
-import {KeycloakService} from "keycloak-angular";
-import {NgForOf} from "@angular/common";
+import { NgForOf } from "@angular/common";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { KeycloakService } from "keycloak-angular";
+import { InspirationCardComponent } from "../inspiration-card/inspiration-card.component";
 
 @Component({
   selector: 'app-inspirations',

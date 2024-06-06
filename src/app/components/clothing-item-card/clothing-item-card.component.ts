@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { ClothingItem } from '../../classes/clothing-item.class';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
 import { ClothingService } from '../../services/clothing.service';
+import { ModalDataService } from '../../services/modal-data.service';
 
 @Component({
   selector: 'app-clothing-item-card',
@@ -19,7 +20,7 @@ export class ClothingItemCardComponent {
 
   convertedImage: string | undefined;
 
-  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService) { }
+  constructor(private clothingService: ClothingService, private clothingImageConverterService: ClothingImageConverterService, private modalDataService: ModalDataService, private keycloakService: KeycloakService) { }
 
   async toggleFavorite(event: Event): Promise<void> {
     event.stopPropagation();
@@ -49,8 +50,7 @@ export class ClothingItemCardComponent {
     });
 
     if (response.ok) {
-      console.log('Clothing item deleted');
-      window.location.reload();
+      this.modalDataService.setNeedsReload(true);
     } else {
       console.error(`Failed to update clothing item: ${response.status}`);
     }

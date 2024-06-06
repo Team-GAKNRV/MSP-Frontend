@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakService } from 'keycloak-angular';
-import { Router } from '@angular/router';
-import { ClothingImageConverter } from '../../services/clothing-image-converter.service';
-import { NgIf } from '@angular/common';
+import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
 
 @Component({
   selector: 'app-inspiration-card',
@@ -17,24 +16,25 @@ export class InspirationCardComponent {
 
   showAddButton: boolean = true;
 
-  constructor(
-    private keycloakService: KeycloakService,
-    private cic: ClothingImageConverter
-  ) {}
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) { }
 
   isImageAtIndex(num: number): string {
-    const pieces: { [key: string]: any }[] = this.data.pieces;
+    const pieces: { [key: string]: any; }[] = this.data.pieces;
+    const emptyImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAF3CAYAAABT8rn8AAAC7klEQVR4Xu3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuBnPMAAHXcKOOAAAAAElFTkSuQmCC';
+
     if (pieces[num] && pieces[num]['image']) {
-      return this.cic.base64ToImage(pieces[num]['image']);
+      if (!pieces[num]['image'].includes(this.clothingImageConverterService.BASE64_DATA_URL_SUBSTRING)) {
+        return this.clothingImageConverterService.addDataUrlPrefix(pieces[num]['image']);
+      } else {
+        return pieces[num]['image'];
+      }
     } else {
-      return this.cic.base64ToImage(
-        'iVBORw0KGgoAAAANSUhEUgAAAfQAAAF3CAYAAABT8rn8AAAC7klEQVR4Xu3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuBnPMAAHXcKOOAAAAAElFTkSuQmCC'
-      );
+      return emptyImage;
     }
   }
 
   getCommonUsage(data: any): string {
-    const pieces: { [key: string]: any }[] = data.pieces;
+    const pieces: { [key: string]: any; }[] = data.pieces;
     const usages: any[] = [];
     let mostCommon: string = 'NA';
     for (let i = 0; i < pieces.length; i++) {
@@ -49,7 +49,7 @@ export class InspirationCardComponent {
   }
 
   getCommonSeason(data: any): string {
-    const pieces: { [key: string]: any }[] = data.pieces;
+    const pieces: { [key: string]: any; }[] = data.pieces;
     const seasons: any[] = [];
     let mostCommon: string = 'NA';
     for (let i = 0; i < pieces.length; i++) {
@@ -64,7 +64,7 @@ export class InspirationCardComponent {
   }
 
   getCommonColor(data: any): string {
-    const pieces: { [key: string]: any }[] = data.pieces;
+    const pieces: { [key: string]: any; }[] = data.pieces;
     const seasons: any[] = [];
     let mostCommon: string = 'NA';
     for (let i = 0; i < pieces.length; i++) {
@@ -79,9 +79,8 @@ export class InspirationCardComponent {
   }
 
   async rerollOutfit(usage: String): Promise<void> {
-    const apiUrl = `http://localhost:8080/api/v1/user/outfit/generate?user-id=${
-      this.keycloakService.getKeycloakInstance().tokenParsed?.sub
-    }&usage=${usage}`;
+    const apiUrl = `http://localhost:8080/api/v1/user/outfit/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub
+      }&usage=${usage}`;
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
@@ -102,9 +101,8 @@ export class InspirationCardComponent {
   }
 
   async addOutfit(outfit: any) {
-    const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${
-      this.keycloakService.getKeycloakInstance().tokenParsed?.sub
-    }`;
+    const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub
+      }`;
     const requestBody = {
       pieces: [
         outfit.pieces[0]._id,

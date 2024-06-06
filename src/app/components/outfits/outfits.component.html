@@ -1,3 +1,12 @@
-<div class="container mx-auto flex flex-wrap justify-center lg:justify-start">
-  <app-outfit-card *ngFor="let outfit of totalOutfits" class="w-1/5 p-2" [data]="outfit"></app-outfit-card>
+<div class="container grid justify-center grid-cols-5 mx-auto lg:justify-start">
+  <app-add-item-card (click)="addNewOutfit()" />
+  <app-outfit-card
+    *ngFor="let outfit of allOutfits"
+    class="w-1/5 p-2"
+    (itemClicked)="openModal($event)"
+    [data]="outfit"
+  ></app-outfit-card>
+  <app-modal-wrapper [showModal]="showModal">
+    <app-outfits-modal (close)="closeModal()"></app-outfits-modal>
+  </app-modal-wrapper>
 </div>

@@ -1,0 +1,59 @@
+<div
+  class="flex flex-col justify-center gap-8 p-8 bg-white select-none rounded-xl"
+  *ngIf="!isSelectingAClothingView; else selectAClothingView"
+>
+  <div class="flex flex-col gap-4">
+    <div class="grid w-full h-full grid-cols-2 grid-rows-2 gap-4">
+      <div *ngFor="let piece of selectedOutfitPieces">
+        <div *ngIf="piece.name !== undefined; else emptySlot">
+          <app-outfits-modal-clothing-card
+            (itemClicked)="handleSelectClothingItem($event)"
+            [clothingItem]="piece"
+            [clothingItemPosition]="selectedOutfitPieces.indexOf(piece)"
+          />
+        </div>
+        <ng-template #emptySlot>
+          <app-add-outfit-card />
+        </ng-template>
+      </div>
+      <div *ngFor="let emptyPieces of emptyOutfitPiecesCount">
+        <app-add-outfit-card (itemClicked)="handleAddClothingItem()" />
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-row gap-4">
+    <div class="w-full">
+      <button
+        class="w-full text-white btn btn-success"
+        (click)="handleSaveClick()"
+      >
+        Speichern
+      </button>
+    </div>
+    <div class="w-full">
+      <button
+        class="w-full text-white btn btn-error"
+        (click)="handleCancelClick()"
+      >
+        Abbrechen
+      </button>
+    </div>
+  </div>
+</div>
+<ng-template #selectAClothingView>
+  <div
+    class="grid justify-center h-[60vh] grid-cols-2 gap-8 p-10 overflow-y-scroll bg-white select-none rounded-xl"
+  >
+    <button
+      class="absolute mr-3 text-2xl top-3 right-4 hover:text-gray-600"
+      (click)="handleStopSelectingClothingItem()"
+    >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <app-outfits-modal-clothing-card
+      *ngFor="let clothing of userClosetItems"
+      (itemClicked)="handleSaveSelectedClothingItem($event)"
+      [clothingItem]="clothing"
+    />
+  </div>
+</ng-template>

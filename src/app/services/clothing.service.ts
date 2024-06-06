@@ -67,6 +67,16 @@ export class ClothingService {
         });
     }
 
+    async getAllClothingItems(bearerToken: string, userId: string): Promise<Response> {
+        return await fetch(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_GET_ALL_CLOTHING_ITEMS_ENDPOINT}?user-id=${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${bearerToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
     private makeStringSingularAndRemoveUnderscores(str: string): string {
         if (str.endsWith('s')) {
             return str.slice(0, -1).replaceAll('_', ' ');
