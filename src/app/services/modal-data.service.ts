@@ -10,12 +10,14 @@ export class ModalDataService {
     private clothingSubject = new BehaviorSubject<GetClothingItem | AddClothingItem | null>(null);
     private outfitSubject = new BehaviorSubject<GetOutfit | AddOutfit | null>(null);
     private outfitToAddClothingItemSubject = new BehaviorSubject<AddOutfit | null>(null);
+    private saveAsNewOutfitSubject = new BehaviorSubject<boolean>(false);
     private fileSubject = new BehaviorSubject<any>(null);
     private needsReloadSubject = new BehaviorSubject<boolean>(false);
 
     clothing$ = this.clothingSubject.asObservable();
     outfit$ = this.outfitSubject.asObservable();
     outfitToAddClothingItem$ = this.outfitToAddClothingItemSubject.asObservable();
+    saveAsNewOutfit$ = this.saveAsNewOutfitSubject.asObservable();
     file$ = this.fileSubject.asObservable();
     needsReload$ = this.needsReloadSubject.asObservable();
 
@@ -29,6 +31,10 @@ export class ModalDataService {
 
     setOutfitToAddClothingItem(data: AddOutfit) {
         this.outfitToAddClothingItemSubject.next(data);
+    }
+
+    setSaveAsNewOutfit(data: boolean) {
+        this.saveAsNewOutfitSubject.next(data);
     }
 
     setFile(file: any) {
