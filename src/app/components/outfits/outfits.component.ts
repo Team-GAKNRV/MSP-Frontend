@@ -49,11 +49,11 @@ export class OutfitsComponent implements OnInit {
   }
 
   async getAllOutfits(): Promise<void> {
-    try {
-      const bearerToken = await this.keycloakService.getToken();
-      const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
+    const bearerToken = await this.keycloakService.getToken();
+    const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
 
-      if (userId) {
+    if (userId) {
+      try {
         const response = await this.outfitService.getAllOutfits(bearerToken, userId);
 
         if (response.ok) {
@@ -66,9 +66,9 @@ export class OutfitsComponent implements OnInit {
         } else {
           throw new Error();
         }
+      } catch {
+        this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
       }
-    } catch {
-      this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
     }
   }
 

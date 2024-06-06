@@ -58,11 +58,11 @@ export class OutfitsModalComponent implements OnInit {
   }
 
   async fillInUserClosetData() {
-    try {
-      const bearerToken = await this.keycloakService.getToken();
-      const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
+    const bearerToken = await this.keycloakService.getToken();
+    const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
 
-      if (userId) {
+    if (userId) {
+      try {
         const response = await this.clothingService.getAllClothingItems(bearerToken, userId);
 
         if (response.ok) {
@@ -73,9 +73,9 @@ export class OutfitsModalComponent implements OnInit {
         } else {
           throw new Error();
         }
+      } catch {
+        this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
       }
-    } catch {
-      this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
     }
   }
 

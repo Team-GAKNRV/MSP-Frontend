@@ -72,9 +72,10 @@ export class OutfitCardComponent {
   async toggleFavorite(event: Event): Promise<void> {
     event.stopPropagation();
 
+    const bearerToken = await this.keycloakService.getToken();
+    const updatedOutfit = this.createRequestBody(this.data);
+
     try {
-      const bearerToken = await this.keycloakService.getToken();
-      const updatedOutfit = this.createRequestBody(this.data);
       const response = await this.outfitService.updateOutfit(bearerToken, this.data._id, updatedOutfit);
 
       if (response.ok) {

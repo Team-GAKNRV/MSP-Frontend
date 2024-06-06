@@ -25,11 +25,11 @@ export class ClothingItemCardComponent {
   async toggleFavorite(event: Event): Promise<void> {
     event.stopPropagation();
 
-    try {
-      const bearerToken = await this.keycloakService.getToken();
-      const base64Image = this.clothingImageConverterService.stripDataUrlPrefix(this.data.image);
-      const updatedClothingItem = new ClothingItem(this.data.name, base64Image, this.data.brand, this.data.color, this.data.masterCategory, this.data.subCategory, this.data.type, this.data.season, this.data.usage, !this.data.isFavorite);
+    const bearerToken = await this.keycloakService.getToken();
+    const base64Image = this.clothingImageConverterService.stripDataUrlPrefix(this.data.image);
+    const updatedClothingItem = new ClothingItem(this.data.name, base64Image, this.data.brand, this.data.color, this.data.masterCategory, this.data.subCategory, this.data.type, this.data.season, this.data.usage, !this.data.isFavorite);
 
+    try {
       const response = await this.clothingService.updateClothingItem(bearerToken, this.data._id, updatedClothingItem);
 
       if (response.ok) {
