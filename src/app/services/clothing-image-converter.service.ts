@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root',
 })
-export class ClothingImageConverter {
+export class ClothingImageConverterService {
+    BASE64_DATA_URL_SUBSTRING = 'data:image/png;base64,';
+
     arrayBufferToBase64(buffer: ArrayBuffer): string {
         const bytes = new Uint8Array(buffer);
         const len = bytes.byteLength;
@@ -38,8 +40,6 @@ export class ClothingImageConverter {
     }
 
     addDataUrlPrefix(base64String: string): string {
-        const dataUrlPattern = 'data:image/png;base64,';
-
-        return dataUrlPattern + base64String;
+        return this.BASE64_DATA_URL_SUBSTRING + base64String;
     }
 }
