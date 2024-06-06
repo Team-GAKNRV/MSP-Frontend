@@ -76,6 +76,7 @@ export class OutfitCardComponent {
     const updatedOutfit = this.createRequestBody(this.data);
 
     try {
+      this.modalDataService.setShowLoadingScreen(true);
       const response = await this.outfitService.updateOutfit(bearerToken, this.data._id, updatedOutfit);
 
       if (response.ok) {
@@ -86,6 +87,8 @@ export class OutfitCardComponent {
       }
     } catch {
       this.modalDataService.setError(FAVORIZE_OUTFIT_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 
@@ -97,6 +100,8 @@ export class OutfitCardComponent {
     event.stopPropagation();
 
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&outfit-id=${this.data._id}`;
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -113,6 +118,8 @@ export class OutfitCardComponent {
       }
     } catch {
       this.modalDataService.setError(DELETE_OUTFIT_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 }

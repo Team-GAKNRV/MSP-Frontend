@@ -30,6 +30,7 @@ export class ClothingItemCardComponent {
     const updatedClothingItem = new ClothingItem(this.data.name, base64Image, this.data.brand, this.data.color, this.data.masterCategory, this.data.subCategory, this.data.type, this.data.season, this.data.usage, !this.data.isFavorite);
 
     try {
+      this.modalDataService.setShowLoadingScreen(true);
       const response = await this.clothingService.updateClothingItem(bearerToken, this.data._id, updatedClothingItem);
 
       if (response.ok) {
@@ -40,6 +41,8 @@ export class ClothingItemCardComponent {
       }
     } catch {
       this.modalDataService.setError(FAVORIZE_CLOTHING_ITEM_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 
@@ -47,6 +50,8 @@ export class ClothingItemCardComponent {
     event.stopPropagation();
 
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/clothing-item?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub!}&clothing-item-id=${this.data._id}`;
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -63,6 +68,8 @@ export class ClothingItemCardComponent {
       }
     } catch {
       this.modalDataService.setError(DELETE_CLOTHING_ITEM_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 

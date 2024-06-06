@@ -63,6 +63,7 @@ export class OutfitsModalComponent implements OnInit {
 
     if (userId) {
       try {
+        this.modalDataService.setShowLoadingScreen(true);
         const response = await this.clothingService.getAllClothingItems(bearerToken, userId);
 
         if (response.ok) {
@@ -75,12 +76,15 @@ export class OutfitsModalComponent implements OnInit {
         }
       } catch {
         this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
+      } finally {
+        this.modalDataService.setShowLoadingScreen(false);
       }
     }
   }
 
   async handleSaveClick() {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
       const bearerToken = await this.keycloakService.getToken();
       const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
       const selectedOutfitPiecesIds: string[] = this.selectedOutfit.pieces.map((piece: GetClothingItem) => piece._id);
@@ -109,6 +113,8 @@ export class OutfitsModalComponent implements OnInit {
       }
     } catch {
       this.modalDataService.setError(UPDATE_OUTFIT_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 

@@ -15,6 +15,7 @@ export class ModalDataService {
     private fileSubject = new BehaviorSubject<any>(null);
     private needsReloadSubject = new BehaviorSubject<boolean>(false);
     private errorSubject = new BehaviorSubject<CustomError | null>(null);
+    private showLoadingScreenSubject = new BehaviorSubject<boolean>(false);
 
     clothing$ = this.clothingSubject.asObservable();
     outfit$ = this.outfitSubject.asObservable();
@@ -23,6 +24,7 @@ export class ModalDataService {
     file$ = this.fileSubject.asObservable();
     needsReload$ = this.needsReloadSubject.asObservable();
     error$ = this.errorSubject.asObservable();
+    showLoadingScreen$ = this.showLoadingScreenSubject.asObservable();
 
     setClothingData(data: GetClothingItem | AddClothingItem) {
         this.clothingSubject.next(data);
@@ -50,5 +52,9 @@ export class ModalDataService {
 
     setError(error: CustomError) {
         this.errorSubject.next(error);
+    }
+
+    setShowLoadingScreen(showLoadingScreen: boolean) {
+        this.showLoadingScreenSubject.next(showLoadingScreen);
     }
 }

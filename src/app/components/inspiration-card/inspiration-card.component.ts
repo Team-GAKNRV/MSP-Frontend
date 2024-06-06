@@ -82,6 +82,8 @@ export class InspirationCardComponent {
 
   async rerollOutfit(usage: String): Promise<void> {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/outfit/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}&usage=${usage}`;
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -99,11 +101,15 @@ export class InspirationCardComponent {
       }
     } catch {
       this.modalDataService.setError(INSPIRATIONS_GET_ALL_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 
   async addOutfit(outfit: any) {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub
         }`;
       const requestBody = {
@@ -130,6 +136,8 @@ export class InspirationCardComponent {
       }
     } catch {
       this.modalDataService.setError(ADD_OUTFIT_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 }

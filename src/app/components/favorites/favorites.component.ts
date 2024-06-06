@@ -28,6 +28,8 @@ export class FavoritesComponent {
 
   async getAllClothingItems(): Promise<void> {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/clothing-items?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -49,11 +51,15 @@ export class FavoritesComponent {
       }
     } catch {
       this.modalDataService.setError(CLOSET_GET_ALL_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 
   async getAllOutfitItems(): Promise<void> {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/outfits?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -71,6 +77,8 @@ export class FavoritesComponent {
       }
     } catch {
       this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 

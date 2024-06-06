@@ -42,6 +42,8 @@ export class ClosetComponent implements OnInit {
 
   async getAllClothingItems(): Promise<void> {
     try {
+      this.modalDataService.setShowLoadingScreen(true);
+
       const apiUrl = `http://localhost:8080/api/v1/user/clothing-items?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -61,6 +63,8 @@ export class ClosetComponent implements OnInit {
       }
     } catch {
       this.modalDataService.setError(CLOSET_GET_ALL_ERROR);
+    } finally {
+      this.modalDataService.setShowLoadingScreen(false);
     }
   }
 
@@ -114,5 +118,4 @@ export class ClosetComponent implements OnInit {
       this.modalDataService.setError(NO_IMAGE_SELECTED_ERROR);
     }
   }
-
 }

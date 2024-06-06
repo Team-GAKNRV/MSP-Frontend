@@ -1,6 +1,8 @@
 <main class="main">
   <app-navbar></app-navbar>
   <app-error-wrapper>
-    <router-outlet />
+    <app-loading-wrapper>
+      <router-outlet />
+    </app-loading-wrapper>
   </app-error-wrapper>
 </main>
