@@ -28,7 +28,7 @@ export class OutfitService {
     }
 
     async updateOutfit(bearerToken: string, outfitId: string, outfit: AddOutfit): Promise<Response> {
-        return await fetch(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_UPDATE_OUTFIT_ENDPOINT}?outfit-item-id=${outfitId}`, {
+        return await fetch(`${environment.JAVA_BACKEND_API_URI}/${environment.JAVA_BACKEND_API_UPDATE_OUTFIT_ENDPOINT}?outfit-id=${outfitId}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${bearerToken}`,
