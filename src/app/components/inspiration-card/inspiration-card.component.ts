@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { KeycloakService } from 'keycloak-angular';
+import { ADD_OUTFIT_ERROR, INSPIRATIONS_GET_ALL_ERROR } from '../../constants/errors.constants';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
 import { ModalDataService } from '../../services/modal-data.service';
 
@@ -80,54 +81,55 @@ export class InspirationCardComponent {
   }
 
   async rerollOutfit(usage: String): Promise<void> {
-    const apiUrl = `http://localhost:8080/api/v1/user/outfit/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub
-      }&usage=${usage}`;
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${await this.keycloakService.getToken()}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.ok) {
-      this.data = await response.json();
-      this.showAddButton = true;
-    } else {
-      this.modalDataService.setError({
-        title: 'Fehler beim Laden von Inspirationen!',
-        message: 'Es konnten keine Inspirationen erstellt werden. Bitte überprüfe, dass du genügend Klamotten im Kleiderschrank hast und versuche es erneut.'
+    try {
+      const apiUrl = `http://localhost:8080/api/v1/user/outfit/generate?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}&usage=${usage}`;
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${await this.keycloakService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
       });
+
+      if (response.ok) {
+        this.data = await response.json();
+        this.showAddButton = true;
+      } else {
+        throw new Error();
+      }
+    } catch {
+      this.modalDataService.setError(INSPIRATIONS_GET_ALL_ERROR);
     }
   }
 
   async addOutfit(outfit: any) {
-    const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub
-      }`;
-    const requestBody = {
-      pieces: [
-        outfit.pieces[0]._id,
-        outfit.pieces[1]._id,
-        outfit.pieces[2]._id,
-      ],
-      isFavorite: false,
-    };
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${await this.keycloakService.getToken()}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (response.ok) {
-      this.showAddButton = false;
-    } else {
-      this.modalDataService.setError({
-        title: 'Fehler beim Hinzufügen des Outfits!',
-        message: 'Dein Outfit konnte nicht hinzugefügt werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
+    try {
+      const apiUrl = `http://localhost:8080/api/v1/user/outfit?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub
+        }`;
+      const requestBody = {
+        pieces: [
+          outfit.pieces[0]._id,
+          outfit.pieces[1]._id,
+          outfit.pieces[2]._id,
+        ],
+        isFavorite: false,
+      };
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${await this.keycloakService.getToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
       });
+
+      if (response.ok) {
+        this.showAddButton = false;
+      } else {
+        throw new Error();
+      }
+    } catch {
+      this.modalDataService.setError(ADD_OUTFIT_ERROR);
     }
   }
 }

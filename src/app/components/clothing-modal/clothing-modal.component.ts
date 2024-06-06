@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { ClothingItem } from '../../classes/clothing-item.class';
+import { SAVE_CLOTHING_ITEM_ERROR, UPDATE_CLOTHING_ITEM_ERROR } from '../../constants/errors.constants';
 import { ArticleType } from '../../enums/articleType.enum';
 import { BaseColour } from '../../enums/baseColour.enum';
 import { MasterCategory } from '../../enums/masterCategory.enum';
@@ -95,15 +96,16 @@ export class ClothingModalComponent implements OnInit {
         const clothingItemToUpload = new ClothingItem(this.nameValue, base64Image, this.brandValue, this.baseColourValue, this.masterCategoryValue, this.subCategoryValue, this.articleTypeValue, this.seasonValue, this.usageValue, this.clothingItem.isFavorite);
         const filledInClothingItem = this.clothingService.createStaticClothingInformation(clothingItemToUpload);
 
-        const response = await this.clothingService.addClothingItem(bearerToken, userId, filledInClothingItem);
+        try {
+          const response = await this.clothingService.addClothingItem(bearerToken, userId, filledInClothingItem);
 
-        if (response.ok) {
-          this.close.emit();
-        } else {
-          this.modalDataService.setError({
-            title: 'Fehler beim Speichern des Kleidungsstücks!',
-            message: 'Dein Kleidungsstück konnte nicht gespeichert werden. Bitte überprüfe, dass du genügend Klamotten im Kleiderschrank hast und versuche es erneut.'
-          });
+          if (response.ok) {
+            this.close.emit();
+          } else {
+            throw new Error();
+          }
+        } catch {
+          this.modalDataService.setError(SAVE_CLOTHING_ITEM_ERROR);
         }
       }
 
@@ -111,15 +113,16 @@ export class ClothingModalComponent implements OnInit {
       const base64Image = this.clothingImageConverterService.stripDataUrlPrefix(this.clothingItem.image);
       let clothingItemToUpload = new ClothingItem(this.nameValue, base64Image, this.brandValue, this.baseColourValue, this.masterCategoryValue, this.subCategoryValue, this.articleTypeValue, this.seasonValue, this.usageValue, this.clothingItem.isFavorite);
 
-      const response = await this.clothingService.updateClothingItem(bearerToken, this.clothingItem._id, clothingItemToUpload);
+      try {
+        const response = await this.clothingService.updateClothingItem(bearerToken, this.clothingItem._id, clothingItemToUpload);
 
-      if (response.ok) {
-        this.close.emit();
-      } else {
-        this.modalDataService.setError({
-          title: 'Fehler beim Aktualisieren des Kleidungsstücks!',
-          message: 'Dein Kleidungsstück konnte nicht aktualisiert werden. Bitte überprüfe, dass du genügend Klamotten im Kleiderschrank hast und versuche es erneut.'
-        });
+        if (response.ok) {
+          this.close.emit();
+        } else {
+          throw new Error();
+        }
+      } catch {
+        this.modalDataService.setError(UPDATE_CLOTHING_ITEM_ERROR);
       }
     }
 

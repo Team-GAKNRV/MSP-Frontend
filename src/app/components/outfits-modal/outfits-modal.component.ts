@@ -2,6 +2,7 @@ import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { ClothingItem } from '../../classes/clothing-item.class';
+import { OUTFITS_GET_ALL_ERROR, UPDATE_OUTFIT_ERROR } from '../../constants/errors.constants';
 import { ClothingItemToReplace, GetClothingItem } from '../../interfaces/clothing.interface';
 import { AddOutfit, GetOutfit } from '../../interfaces/outfit.interface';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
@@ -57,55 +58,57 @@ export class OutfitsModalComponent implements OnInit {
   }
 
   async fillInUserClosetData() {
-    const bearerToken = await this.keycloakService.getToken();
-    const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
+    try {
+      const bearerToken = await this.keycloakService.getToken();
+      const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
 
-    if (userId) {
-      const response = await this.clothingService.getAllClothingItems(bearerToken, userId);
+      if (userId) {
+        const response = await this.clothingService.getAllClothingItems(bearerToken, userId);
 
-      if (response.ok) {
-        this.userClosetItems = await response.json();
-        this.userClosetItems.forEach((clothingItem: any) => {
-          clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
-        });
-      } else {
-        this.modalDataService.setError({
-          title: 'Fehler beim Laden der Outfits!',
-          message: 'Deine Outfits konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
-        });
+        if (response.ok) {
+          this.userClosetItems = await response.json();
+          this.userClosetItems.forEach((clothingItem: any) => {
+            clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
+          });
+        } else {
+          throw new Error();
+        }
       }
+    } catch {
+      this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
     }
   }
 
   async handleSaveClick() {
-    const bearerToken = await this.keycloakService.getToken();
-    const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
-    const selectedOutfitPiecesIds: string[] = this.selectedOutfit.pieces.map((piece: GetClothingItem) => piece._id);
-    const outfitToSave: AddOutfit = {
-      pieces: selectedOutfitPiecesIds,
-      isFavorite: false
-    };
+    try {
+      const bearerToken = await this.keycloakService.getToken();
+      const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
+      const selectedOutfitPiecesIds: string[] = this.selectedOutfit.pieces.map((piece: GetClothingItem) => piece._id);
+      const outfitToSave: AddOutfit = {
+        pieces: selectedOutfitPiecesIds,
+        isFavorite: false
+      };
 
-    let response;
+      let response;
 
-    if (this.saveAsNewOutfit && userId) {
-      response = await this.outfitService.addOutfit(bearerToken, userId, outfitToSave);
-    } else {
-      response = await this.outfitService.updateOutfit(bearerToken, this.selectedOutfit._id, outfitToSave);
-    }
+      if (this.saveAsNewOutfit && userId) {
+        response = await this.outfitService.addOutfit(bearerToken, userId, outfitToSave);
+      } else {
+        response = await this.outfitService.updateOutfit(bearerToken, this.selectedOutfit._id, outfitToSave);
+      }
 
-    if (response.ok) {
-      this.selectedOutfit = null;
-      this.selectedOutfitPieces = [];
-      this.emptyOutfitPiecesCount = [];
-      this.saveAsNewOutfit = false;
-      this.modalDataService.setNeedsReload(true);
-      this.close.emit();
-    } else {
-      this.modalDataService.setError({
-        title: 'Fehler beim Aktualisieren des Outfits!',
-        message: 'Dein Outfit konnte nicht aktualisiert werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
-      });
+      if (response.ok) {
+        this.selectedOutfit = null;
+        this.selectedOutfitPieces = [];
+        this.emptyOutfitPiecesCount = [];
+        this.saveAsNewOutfit = false;
+        this.modalDataService.setNeedsReload(true);
+        this.close.emit();
+      } else {
+        throw new Error();
+      }
+    } catch {
+      this.modalDataService.setError(UPDATE_OUTFIT_ERROR);
     }
   }
 

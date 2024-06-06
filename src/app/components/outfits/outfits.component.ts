@@ -1,6 +1,7 @@
 import { NgForOf } from "@angular/common";
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { KeycloakService } from "keycloak-angular";
+import { OUTFITS_GET_ALL_ERROR } from "../../constants/errors.constants";
 import { GetClothingItem } from "../../interfaces/clothing.interface";
 import { AddOutfit, GetOutfit } from '../../interfaces/outfit.interface';
 import { ClothingImageConverterService } from "../../services/clothing-image-converter.service";
@@ -48,25 +49,26 @@ export class OutfitsComponent implements OnInit {
   }
 
   async getAllOutfits(): Promise<void> {
-    const bearerToken = await this.keycloakService.getToken();
-    const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
+    try {
+      const bearerToken = await this.keycloakService.getToken();
+      const userId = this.keycloakService.getKeycloakInstance().tokenParsed?.sub;
 
-    if (userId) {
-      const response = await this.outfitService.getAllOutfits(bearerToken, userId);
+      if (userId) {
+        const response = await this.outfitService.getAllOutfits(bearerToken, userId);
 
-      if (response.ok) {
-        this.allOutfits = await response.json();
-        this.allOutfits.forEach((outfit: GetOutfit) => {
-          outfit.pieces.forEach((clothingItem: GetClothingItem) => {
-            clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
+        if (response.ok) {
+          this.allOutfits = await response.json();
+          this.allOutfits.forEach((outfit: GetOutfit) => {
+            outfit.pieces.forEach((clothingItem: GetClothingItem) => {
+              clothingItem.image = this.clothingImageConverterService.addDataUrlPrefix(clothingItem.image);
+            });
           });
-        });
-      } else {
-        this.modalDataService.setError({
-          title: 'Fehler beim Laden der Outfits!',
-          message: 'Deine Outfits konnten nicht geladen werden. Bitte überprüfe deine Verbindung und versuche es erneut.'
-        });
+        } else {
+          throw new Error();
+        }
       }
+    } catch {
+      this.modalDataService.setError(OUTFITS_GET_ALL_ERROR);
     }
   }
 
