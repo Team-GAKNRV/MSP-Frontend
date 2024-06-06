@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { ClothingItem } from '../../classes/clothing-item.class';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { ModalDataService } from '../../services/modal-data.service';
 import { ClothingItemCardComponent } from '../clothing-item-card/clothing-item-card.component';
 import { OutfitCardComponent } from '../outfit-card/outfit-card.component';
 
@@ -16,10 +17,12 @@ import { OutfitCardComponent } from '../outfit-card/outfit-card.component';
 })
 export class HomeComponent {
   @ViewChild(ClothingItemCardComponent) child: any;
+
+  needsReload: boolean = false;
   numberOfCardsClothing = [];
   numberOfCardsOutfit = [];
 
-  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) {
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private modalDataService: ModalDataService) {
   }
 
   async getAllClothingItems(): Promise<void> {
@@ -57,6 +60,15 @@ export class HomeComponent {
   }
 
   ngOnInit(): void {
+    this.modalDataService.needsReload$.subscribe(needsReload => {
+      this.needsReload = needsReload;
+      if (this.needsReload) {
+        this.getAllClothingItems();
+        this.getAllOutfitItems();
+        this.modalDataService.setNeedsReload(false);
+      }
+    });
+
     this.getAllClothingItems();
     this.getAllOutfitItems();
   }
