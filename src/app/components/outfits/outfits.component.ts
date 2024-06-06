@@ -2,10 +2,11 @@ import { NgForOf } from "@angular/common";
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { KeycloakService } from "keycloak-angular";
 import { GetClothingItem } from "../../interfaces/clothing.interface";
-import { GetOutfit } from '../../interfaces/outfit.interface';
-import { ClothingImageConverter } from "../../services/clothing-image-converter.service";
+import { AddOutfit, GetOutfit } from '../../interfaces/outfit.interface';
+import { ClothingImageConverterService } from "../../services/clothing-image-converter.service";
 import { ModalDataService } from "../../services/modal-data.service";
 import { OutfitService } from "../../services/outfit.service";
+import { AddItemCardComponent } from "../add-item-card/add-item-card.component";
 import { ModalWrapperComponent } from "../modal-wrapper/modal-wrapper.component";
 import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
 import { OutfitsModalComponent } from "../outfits-modal/outfits-modal.component";
@@ -19,7 +20,8 @@ import { OutfitsModalComponent } from "../outfits-modal/outfits-modal.component"
     NgForOf,
     OutfitCardComponent,
     ModalWrapperComponent,
-    OutfitsModalComponent
+    OutfitsModalComponent,
+    AddItemCardComponent
   ]
 })
 export class OutfitsComponent implements OnInit {
@@ -28,11 +30,10 @@ export class OutfitsComponent implements OnInit {
   @Output() itemClicked = new EventEmitter<any>();
 
   showModal: boolean = false;
-  saveAsNewItem: boolean = false;
   needsReload: boolean = false;
   allOutfits: GetOutfit[] = [];
 
-  constructor(private clothingImageConverterService: ClothingImageConverter, private keycloakService: KeycloakService, private modalDataService: ModalDataService, private outfitService: OutfitService) { }
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private modalDataService: ModalDataService, private outfitService: OutfitService) { }
 
   ngOnInit(): void {
     this.modalDataService.needsReload$.subscribe(needsReload => {
@@ -66,13 +67,23 @@ export class OutfitsComponent implements OnInit {
     }
   }
 
-  openModal(data: GetOutfit) {
+  addNewOutfit() {
+    const newOutfit: AddOutfit = {
+      pieces: [],
+      isFavorite: false
+    };
+
+    this.modalDataService.setSaveAsNewOutfit(true);
+    this.openModal(newOutfit);
+  }
+
+  openModal(data: GetOutfit | AddOutfit) {
     this.modalDataService.setOutfitData(data);
     this.showModal = true;
   }
 
   closeModal() {
+    this.modalDataService.setSaveAsNewOutfit(false);
     this.showModal = false;
-    this.saveAsNewItem = false;
   }
 }
