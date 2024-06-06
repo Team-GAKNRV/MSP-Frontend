@@ -3,10 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { GetClothingItem } from '../../interfaces/clothing.interface';
 import { ClothingImageConverterService } from '../../services/clothing-image-converter.service';
+import { ModalDataService } from '../../services/modal-data.service';
 import { ClothingItemCardComponent } from '../clothing-item-card/clothing-item-card.component';
 import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
-
-
 
 @Component({
   selector: 'app-favorites',
@@ -17,13 +16,14 @@ import { OutfitCardComponent } from "../outfit-card/outfit-card.component";
 })
 export class FavoritesComponent {
   @ViewChild(ClothingItemCardComponent) child: any;
+
+  needsReload: boolean = false;
   clothingItems: any[] = [];
   outfits: any[] = [];
   favoriteClothingItems = [];
   favoriteOutfits = [];
 
-
-  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService) { }
+  constructor(private clothingImageConverterService: ClothingImageConverterService, private keycloakService: KeycloakService, private modalDataService: ModalDataService) { }
 
   async getAllClothingItems(): Promise<void> {
     const apiUrl = `http://localhost:8080/api/v1/user/clothing-items?user-id=${this.keycloakService.getKeycloakInstance().tokenParsed?.sub}`;
@@ -64,6 +64,15 @@ export class FavoritesComponent {
   }
 
   ngOnInit(): void {
+    this.modalDataService.needsReload$.subscribe(needsReload => {
+      this.needsReload = needsReload;
+      if (this.needsReload) {
+        this.getAllClothingItems();
+        this.getAllOutfitItems();
+        this.modalDataService.setNeedsReload(false);
+      }
+    });
+
     this.getAllClothingItems();
     this.getAllOutfitItems();
   }
