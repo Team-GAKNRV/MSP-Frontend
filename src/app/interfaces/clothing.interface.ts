@@ -24,3 +24,8 @@ export interface AddClothingItem {
     usage: string;
     isFavorite: boolean;
 }
+
+export interface ClothingItemToReplace {
+    position: number;
+    clothingItemData: GetClothingItem;
+}
