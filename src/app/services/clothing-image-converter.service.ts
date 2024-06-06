@@ -36,4 +36,10 @@ export class ClothingImageConverter {
 
         return base64String.replace(dataUrlPattern, '');
     }
+
+    addDataUrlPrefix(base64String: string): string {
+        const dataUrlPattern = 'data:image/png;base64,';
+
+        return dataUrlPattern + base64String;
+    }
 }

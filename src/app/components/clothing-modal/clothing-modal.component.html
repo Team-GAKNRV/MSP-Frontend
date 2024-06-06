@@ -1,11 +1,11 @@
-<div class="flex justify-center pt-8">
+<div class="flex justify-center p-8 bg-white rounded-xl">
   <div class="flex flex-col gap-4">
     <div class="container mx-auto">
-      <div class="relative w-[42rem] h-[24rem]" *ngIf="uploadedImage">
+      <div class="relative w-[42rem] h-[24rem]" *ngIf="clothingItem">
         <img
-          [src]="uploadedImage"
+          [src]="clothingItem.image"
           alt="Foto vom Kleidungsstück"
-          class="absolute top-0 left-0 object-cover w-[42rem] h-[24rem] rounded-xl"
+          class="absolute top-0 left-0 object-cover w-[42rem] h-[24rem] rounded-xl select-none"
         />
       </div>
     </div>
