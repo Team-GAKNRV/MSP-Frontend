@@ -9,11 +9,13 @@ import { AddOutfit, GetOutfit } from '../interfaces/outfit.interface';
 export class ModalDataService {
     private clothingSubject = new BehaviorSubject<GetClothingItem | AddClothingItem | null>(null);
     private outfitSubject = new BehaviorSubject<GetOutfit | AddOutfit | null>(null);
+    private outfitToAddClothingItemSubject = new BehaviorSubject<AddOutfit | null>(null);
     private fileSubject = new BehaviorSubject<any>(null);
     private needsReloadSubject = new BehaviorSubject<boolean>(false);
 
     clothing$ = this.clothingSubject.asObservable();
     outfit$ = this.outfitSubject.asObservable();
+    outfitToAddClothingItem$ = this.outfitToAddClothingItemSubject.asObservable();
     file$ = this.fileSubject.asObservable();
     needsReload$ = this.needsReloadSubject.asObservable();
 
@@ -23,6 +25,10 @@ export class ModalDataService {
 
     setOutfitData(data: GetOutfit | AddOutfit) {
         this.outfitSubject.next(data);
+    }
+
+    setOutfitToAddClothingItem(data: AddOutfit) {
+        this.outfitToAddClothingItemSubject.next(data);
     }
 
     setFile(file: any) {
